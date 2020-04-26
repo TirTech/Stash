@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools" android:id="@+id/nav_main" app:startDestination="@id/collectionFragment">
+
+    <fragment android:id="@+id/projectFragment" android:name="ca.tirtech.stash.fragments.ProjectFragment" android:label="ProjectFragment"/>
+    <fragment android:id="@+id/collectionFragment" android:name="ca.tirtech.stash.fragments.CollectionFragment" android:label="CollectionFragment"/>
+    <fragment android:id="@+id/patternFragment" android:name="ca.tirtech.stash.fragments.PatternFragment" android:label="PatternFragment"/>
+    <action android:id="@+id/action_global_collectionFragment" app:destination="@id/collectionFragment"/>
+    <action android:id="@+id/action_global_patternFragment" app:destination="@id/patternFragment"/>
+    <action android:id="@+id/action_global_projectFragment" app:destination="@id/projectFragment"/>
+</navigation>
