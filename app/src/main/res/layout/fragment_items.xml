@@ -1,10 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                                                   xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-                                                   android:layout_height="match_parent">
-
-    <TextView
-            android:text="ITEMS FRAGMENT"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:id="@+id/textView2" tools:layout_editor_absoluteY="135dp" tools:layout_editor_absoluteX="136dp"/>
-</androidx.constraintlayout.widget.ConstraintLayout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <import type="android.view.View"/>
+        <variable name="rvItemAdapter" type="ca.tirtech.stash.fragments.ItemsFragment.ItemAdapter"/>
+        <variable name="navController" type="androidx.navigation.NavController"/>
+        <variable name="model" type="ca.tirtech.stash.CollectionModel"/>
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout android:layout_height="match_parent" android:layout_width="match_parent" android:paddingVertical="@dimen/activity_vertical_margin" android:paddingHorizontal="@dimen/activity_horizontal_margin">
+        <Button
+                android:text="@string/add_item"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content" android:id="@+id/btn_add_item" app:layout_constraintTop_toTopOf="parent" app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent" android:onClick="@{() -> navController.navigate(@id/newItemFragment)}"/>
+        <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="0dp" android:id="@+id/rv_items" app:layout_constraintTop_toBottomOf="@id/btn_add_item" app:layout_constraintStart_toStartOf="parent" app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintEnd_toEndOf="parent"
+                android:visibility="@{rvItemAdapter.items.size() == 0 ? View.GONE : View.VISIBLE}">
+        </androidx.recyclerview.widget.RecyclerView>
+        <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" app:srcCompat="@drawable/ghost" android:id="@+id/imageView3" app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent" app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintTop_toBottomOf="@+id/btn_add_item"
+                android:visibility="@{rvItemAdapter.items.size() != 0 ? View.GONE : View.VISIBLE}"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

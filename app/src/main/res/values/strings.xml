@@ -5,4 +5,21 @@
     <string name="bottom_nav_collection">Collection</string>
     <string name="bottom_nav_projects">Projects</string>
     <string name="bottom_nav_patterns">Patterns</string>
+    <string name="add_category">Add Category</string>
+    <string name="add_item">Add Item</string>
+    <string name="not_implemented">Not yet implemented!</string>
+    <string name="refresh">Refresh</string>
+    <string name="category_name">Category Name</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
+    <string name="new_category_name_invalid">Category name cannot be blank</string>
+    <string name="item_title">Item Title</string>
+    <string name="item_description">Item Description</string>
+    <string name="new_item_description_invalid">Item description cannot be blank</string>
+    <string name="new_item_title_invalid">Item title cannot be blank</string>
+    <string name="field_name">Field Name</string>
+    <string name="field_show_as_label">Show as Label</string>
+    <string name="field_type">Field Type</string>
+    <string name="add">Add</string>
+    <string name="remove">Remove</string>
 </resources>
