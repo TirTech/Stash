@@ -6,14 +6,18 @@ import android.widget.Spinner
 import androidx.databinding.BindingAdapter
 import ca.tirtech.stash.R
 
-@BindingAdapter("entries")
+@BindingAdapter("android:entries")
 fun Spinner.setEntries(entries: List<Any>) {
-    adapter = ArrayAdapter(context,R.layout.support_simple_spinner_dropdown_item,entries).apply { setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item) }
+    adapter = ArrayAdapter(context,
+                           R.layout.support_simple_spinner_dropdown_item,
+                           entries).apply { setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item) }
 }
 
-@BindingAdapter("entries")
+@BindingAdapter("android:entries")
 fun Spinner.setEntries(entries: Array<Any>) {
-    adapter = ArrayAdapter(context,R.layout.support_simple_spinner_dropdown_item,entries).apply { setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item) }
+    adapter = ArrayAdapter(context,
+                           R.layout.support_simple_spinner_dropdown_item,
+                           entries).apply { setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item) }
 }
 
 @BindingAdapter("android:visibility")

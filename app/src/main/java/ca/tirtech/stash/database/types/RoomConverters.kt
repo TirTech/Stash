@@ -3,7 +3,7 @@ package ca.tirtech.stash.database.types
 import androidx.room.TypeConverter
 import ca.tirtech.stash.util.fromJsonString
 import org.json.JSONArray
-import java.util.ArrayList
+import java.util.*
 
 object RoomConverters {
     @TypeConverter

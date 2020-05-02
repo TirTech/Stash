@@ -35,11 +35,7 @@ class CategoriesFragment : Fragment() {
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, backPressedCallback)
 
         model = ViewModelProvider(requireActivity()).get(CollectionModel::class.java)
@@ -61,16 +57,15 @@ class CategoriesFragment : Fragment() {
         return binding.root
     }
 
-    inner class CategoryAdapter(currentCategory: LiveData<CategoryWithSubcategory>) :
-        RecyclerView.Adapter<CategoryViewHolder>() {
+    inner class CategoryAdapter(currentCategory: LiveData<CategoryWithSubcategory>) : RecyclerView.Adapter<CategoryViewHolder>() {
         val categories: LiveData<List<Category>?>
 
         inner class CategoryViewHolder(var cardView: CardView) : RecyclerView.ViewHolder(cardView) {
             var txtName: TextView = cardView.findViewById(R.id.txt_category_name)
         }
 
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryViewHolder =
-            CategoryViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.category_rv_card, parent, false) as CardView)
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryViewHolder = CategoryViewHolder(
+                LayoutInflater.from(parent.context).inflate(R.layout.category_rv_card, parent, false) as CardView)
 
         override fun onBindViewHolder(holder: CategoryViewHolder, position: Int) {
             val (name, _, id) = categories.value!![position]

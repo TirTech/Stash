@@ -10,40 +10,50 @@ import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.fragment.NavHostFragment
 import ca.tirtech.stash.R
+import ca.tirtech.stash.databinding.FragmentCollectionBinding
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
 
 class CollectionFragment : Fragment() {
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        val root = inflater.inflate(R.layout.fragment_collection, container, false) as ConstraintLayout
-        val tabs = (root.findViewById(R.id.tabs) as TabLayout)
-        val tabCategories = tabs.newTab().setText(R.string.tab_text_category).also { tabs.addTab(it) }
-        val tabItems = tabs.newTab().setText(R.string.tab_text_items).also { tabs.addTab(it) }
-        val navController = (childFragmentManager.findFragmentById(R.id.nav_fragment_collection) as NavHostFragment)
-            .navController.also {
-                it.addOnDestinationChangedListener { _: NavController?, destination: NavDestination, _: Bundle? ->
-                    when (destination.id) {
-                        R.id.categoriesFragment -> tabs.selectTab(tabCategories)
-                        R.id.itemsFragment -> tabs.selectTab(tabItems)
-                        else -> Unit
-                    }
-                }
-            }
-        tabs.addOnTabSelectedListener(object : OnTabSelectedListener {
-            override fun onTabSelected(tab: TabLayout.Tab) =
-                when (tab) {
-                    tabCategories -> navController.navigate(R.id.categoriesFragment)
-                    tabItems -> navController.navigate(R.id.itemsFragment)
+    private lateinit var binding: FragmentCollectionBinding
+    private lateinit var tabCategories: TabLayout.Tab
+    private lateinit var tabItems: TabLayout.Tab
+    private lateinit var navController: NavController
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        binding = FragmentCollectionBinding.inflate(inflater,container,false)
+        binding.tabs.apply {
+            addTab(newTab().setText(R.string.tab_text_category).also { tabCategories = it })
+            addTab(newTab().setText(R.string.tab_text_items).also { tabItems = it })
+            addOnTabSelectedListener(object : OnTabSelectedListener {
+                override fun onTabSelected(tab: TabLayout.Tab) = when (tab) {
+                    tabCategories -> navController.navigate(R.id.action_itemsFragment_to_categoriesFragment)
+                    tabItems -> navController.navigate(R.id.action_categoriesFragment_to_itemsFragment)
                     else -> Unit
                 }
 
-            override fun onTabUnselected(tab: TabLayout.Tab) {}
-            override fun onTabReselected(tab: TabLayout.Tab) {}
-        })
-        return root
+                override fun onTabUnselected(tab: TabLayout.Tab) {}
+                override fun onTabReselected(tab: TabLayout.Tab) {}
+            })
+        }
+        navController = (childFragmentManager.findFragmentById(R.id.nav_fragment_collection) as NavHostFragment).navController.also {
+            it.addOnDestinationChangedListener { _: NavController?, destination: NavDestination, _: Bundle? ->
+                when (destination.id) {
+                    R.id.categoriesFragment -> binding.apply {
+                        tabs.selectTab(tabCategories)
+                        showTabs = true
+                    }
+                    R.id.itemsFragment -> binding.apply {
+                        tabs.selectTab(tabItems)
+                        showTabs = true
+                    }
+                    R.id.newCategoryFragment -> binding.showTabs = false
+                    R.id.newItemFragment -> binding.showTabs = false
+                    else -> Unit
+                }
+                binding.invalidateAll()
+            }
+        }
+        return binding.root
     }
 }

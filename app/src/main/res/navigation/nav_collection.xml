@@ -1,16 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<navigation xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/nav_collection" app:startDestination="@id/categoriesFragment">
+<navigation
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/nav_collection"
+        app:startDestination="@id/categoriesFragment">
 
-    <fragment android:id="@+id/categoriesFragment" android:name="ca.tirtech.stash.fragments.CategoriesFragment" android:label="CategoriesFragment">
-        <action android:id="@+id/action_categoriesFragment_to_itemsFragment" app:destination="@id/itemsFragment"/>
-        <action android:id="@+id/action_categoriesFragment_to_newCategoryFragment" app:destination="@id/newCategoryFragment"/>
+    <fragment
+            android:id="@+id/categoriesFragment"
+            android:name="ca.tirtech.stash.fragments.CategoriesFragment"
+            android:label="CategoriesFragment">
+        <action
+                android:id="@+id/action_categoriesFragment_to_itemsFragment"
+                app:destination="@id/itemsFragment"
+                app:enterAnim="@anim/slide_in_right"
+                app:exitAnim="@anim/slide_out_left"/>
+        <action
+                android:id="@+id/action_categoriesFragment_to_newCategoryFragment"
+                app:destination="@id/newCategoryFragment"
+                app:enterAnim="@android:anim/fade_in"
+                app:exitAnim="@android:anim/fade_out"
+                app:popEnterAnim="@android:anim/fade_in"
+                app:popExitAnim="@android:anim/fade_out"/>
     </fragment>
-    <fragment android:id="@+id/itemsFragment" android:name="ca.tirtech.stash.fragments.ItemsFragment" android:label="ItemsFragment">
-        <action android:id="@+id/action_itemsFragment_to_categoriesFragment" app:destination="@id/categoriesFragment"/>
-        <action android:id="@+id/action_itemsFragment_to_newItemFragment" app:destination="@id/newItemFragment"/>
+    <fragment
+            android:id="@+id/itemsFragment"
+            android:name="ca.tirtech.stash.fragments.ItemsFragment"
+            android:label="ItemsFragment">
+        <action
+                android:id="@+id/action_itemsFragment_to_categoriesFragment"
+                app:destination="@id/categoriesFragment"
+                app:enterAnim="@android:anim/slide_in_left"
+                app:exitAnim="@android:anim/slide_out_right"/>
+        <action
+                android:id="@+id/action_itemsFragment_to_newItemFragment"
+                app:destination="@id/newItemFragment"
+                app:enterAnim="@android:anim/fade_in"
+                app:exitAnim="@android:anim/fade_out"
+                app:popEnterAnim="@android:anim/fade_in"
+                app:popExitAnim="@android:anim/fade_out"/>
     </fragment>
-    <fragment android:id="@+id/newCategoryFragment" android:name="ca.tirtech.stash.fragments.NewCategoryFragment" android:label="NewCategoryFragment"/>
-    <fragment android:id="@+id/newItemFragment" android:name="ca.tirtech.stash.fragments.NewItemFragment" android:label="NewItemFragment"/>
+    <fragment
+            android:id="@+id/newCategoryFragment"
+            android:name="ca.tirtech.stash.fragments.NewCategoryFragment"
+            android:label="NewCategoryFragment"/>
+    <fragment
+            android:id="@+id/newItemFragment"
+            android:name="ca.tirtech.stash.fragments.NewItemFragment"
+            android:label="NewItemFragment"/>
 </navigation>

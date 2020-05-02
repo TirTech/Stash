@@ -1,46 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools">
+<layout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
-    </data>
-    <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginVertical="@dimen/activity_vertical_margin"
-            android:layout_marginHorizontal="@dimen/activity_horizontal_margin">
 
-        <EditText
+    </data>
+    <merge
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/txtlayout_field_name"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:inputType="textPersonName"
-                android:ems="10"
-                android:id="@+id/edittxt_field_name" android:hint="@string/field_name"
-                app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintBottom_toTopOf="@+id/textView2" app:layout_constraintVertical_chainStyle="packed"
-                android:layout_marginBottom="@dimen/item_spacing"/>
+                android:hint="@string/field_name"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintBottom_toTopOf="@+id/textView2"
+                app:layout_constraintVertical_chainStyle="packed"
+                android:layout_marginBottom="@dimen/item_spacing">
+            <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPersonName"
+                    android:ems="10"
+                    android:id="@+id/edittxt_field_name"/>
+        </com.google.android.material.textfield.TextInputLayout>
         <Spinner
                 android:layout_width="0dp"
-                android:layout_height="wrap_content" android:id="@+id/spn_field_type" android:spinnerMode="dropdown"
-                app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintHorizontal_bias="0.5" app:layout_constraintTop_toBottomOf="@+id/textView2"
+                android:layout_height="wrap_content"
+                android:id="@+id/spn_field_type"
+                android:spinnerMode="dropdown"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView2"
                 app:layout_constraintVertical_chainStyle="packed"
                 app:layout_constraintBottom_toTopOf="@+id/switch_show_label"
                 android:layout_marginBottom="@dimen/item_spacing"/>
-        <Switch
+        <com.google.android.material.switchmaterial.SwitchMaterial
                 android:layout_width="0dp"
-                android:layout_height="wrap_content" android:id="@+id/switch_show_label"
-                android:text="@string/field_show_as_label" app:layout_constraintTop_toBottomOf="@+id/spn_field_type"
-                android:layout_marginTop="@dimen/item_spacing" app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" app:layout_constraintHorizontal_bias="0.5"/>
+                android:layout_height="wrap_content"
+                android:id="@+id/switch_show_label"
+                android:text="@string/field_show_as_label"
+                app:layout_constraintTop_toBottomOf="@+id/spn_field_type"
+                android:layout_marginTop="@dimen/item_spacing"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
         <TextView
                 android:text="@string/field_type"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:id="@+id/textView2"
-                app:layout_constraintVertical_chainStyle="packed" app:layout_constraintStart_toStartOf="parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView2"
+                app:layout_constraintVertical_chainStyle="packed"
+                app:layout_constraintStart_toStartOf="parent"
                 android:layout_marginStart="@dimen/item_spacing"
-                app:layout_constraintTop_toBottomOf="@+id/edittxt_field_name"
+                app:layout_constraintTop_toBottomOf="@+id/txtlayout_field_name"
                 app:layout_constraintBottom_toTopOf="@+id/spn_field_type"
-                android:layout_marginBottom="@dimen/item_spacing" android:layout_marginTop="@dimen/item_spacing"/>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+                android:layout_marginBottom="@dimen/item_spacing"
+                android:layout_marginTop="@dimen/item_spacing"/>
+        <ca.tirtech.stash.components.FieldEntry
+                android:id="@+id/fe_default"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginTop="@dimen/item_spacing"
+                app:layout_constraintTop_toBottomOf="@+id/switch_show_label"
+                app:layout_constraintEnd_toEndOf="parent"/>
+    </merge>
 </layout>

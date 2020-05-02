@@ -11,3 +11,16 @@ fun <T> ArrayList<T>.fromJsonString(list: String): ArrayList<T> = apply {
         e.printStackTrace();
     }
 }
+
+fun JSONArray.merge(other: JSONArray): JSONArray = apply {
+    for (i in 0..length()) {
+        put(other.get(i))
+    }
+}
+
+fun <T> Collection<T>.toJsonString(): String = stream()
+        .map { it.toString() }
+        .collect({ JSONArray() },
+                 { ja, str -> ja.put(str) },
+                 { a, b -> a.merge(b) })
+        .toString()

@@ -1,35 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
+        <variable
+                name="title"
+                type="String"/>
+        <variable
+                name="description"
+                type="String"/>
     </data>
-    <androidx.cardview.widget.CardView
+    <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:contentPadding="10dp" app:cardCornerRadius="2dp">
+            app:contentPadding="10dp"
+            app:cardCornerRadius="2dp">
         <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" android:paddingBottom="5dp">
+                android:layout_height="match_parent"
+                android:paddingBottom="5dp">
             <ImageView
                     android:layout_width="wrap_content"
-                    android:layout_height="0dp" app:srcCompat="@android:drawable/ic_menu_camera" android:id="@+id/img_item_photo" app:layout_constraintEnd_toEndOf="parent" app:layout_constraintTop_toTopOf="parent" app:layout_constraintBottom_toBottomOf="parent"/>
+                    android:layout_height="0dp"
+                    app:srcCompat="@android:drawable/ic_menu_camera"
+                    android:id="@+id/img_item_photo"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
             <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content" app:layout_constraintStart_toStartOf="parent" app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintEnd_toStartOf="@id/img_item_photo" app:layout_constraintTop_toTopOf="parent" android:id="@+id/constraintLayout">
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/img_item_photo"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:id="@+id/constraintLayout">
 
                 <TextView
-                        android:text="TextView"
+                        android:text="@{title}"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content" android:id="@+id/txt_item_title" app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent" app:layout_constraintTop_toTopOf="parent"/>
+                        android:layout_height="wrap_content"
+                        android:id="@+id/txt_item_title"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:textAppearance="?attr/textAppearanceBody1"/>
                 <TextView
-                        android:text="TextView"
+                        android:text="@{description}"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content" android:id="@+id/txt_item_description" app:layout_constraintTop_toBottomOf="@id/txt_item_title" app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent" app:layout_constraintBottom_toTopOf="@id/chpgrp_item_labels"/>
+                        android:layout_height="wrap_content"
+                        android:id="@+id/txt_item_description"
+                        app:layout_constraintTop_toBottomOf="@id/txt_item_title"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintBottom_toTopOf="@id/chpgrp_item_labels"
+                        android:textAppearance="?attr/textAppearanceBody2"/>
                 <com.google.android.material.chip.ChipGroup
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content" app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent" android:id="@+id/chpgrp_item_labels">
+                        android:layout_height="wrap_content"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:id="@+id/chpgrp_item_labels">
 
                 </com.google.android.material.chip.ChipGroup>
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.cardview.widget.CardView>
+    </com.google.android.material.card.MaterialCardView>
 </layout>

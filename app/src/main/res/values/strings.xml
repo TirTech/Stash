@@ -22,4 +22,5 @@
     <string name="field_type">Field Type</string>
     <string name="add">Add</string>
     <string name="remove">Remove</string>
+    <string name="add_field">Add Field</string>
 </resources>

@@ -20,11 +20,7 @@ class NewItemFragment : Fragment() {
     private lateinit var binding: FragmentNewItemBinding
     private lateinit var navController: NavController
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         navController = Navigation.findNavController(container!!)
         model = ViewModelProvider(requireActivity()).get(CollectionModel::class.java)
         binding = FragmentNewItemBinding.inflate(inflater, container, false).also {

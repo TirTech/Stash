@@ -3,24 +3,20 @@ package ca.tirtech.stash.components
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
-import android.view.View
-import android.widget.LinearLayout
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.os.bundleOf
-import ca.tirtech.stash.R
 import ca.tirtech.stash.database.entity.FieldConfig
 import ca.tirtech.stash.database.types.FieldType
-import ca.tirtech.stash.databinding.CustomFieldEditorBinding
 import ca.tirtech.stash.databinding.CustomFieldEntryBinding
+import ca.tirtech.stash.util.toJsonString
 import ca.tirtech.stash.util.value
-import java.util.*
 
-class FieldEntry(context: Context) : ConstraintLayout(context) {
+class FieldEntry(context: Context, attrs: AttributeSet) : ConstraintLayout(context, attrs) {
     private var binding: CustomFieldEntryBinding
 
     init {
-        binding = CustomFieldEntryBinding.inflate(LayoutInflater.from(context),this,false)
-        binding.config = FieldConfig("Dummy",FieldType.STRING,null,false,"",ArrayList())
+        binding = CustomFieldEntryBinding.inflate(LayoutInflater.from(context), this, true).apply {
+            config = FieldConfig("Dummy", FieldType.MULTI_CHOICE, null, false, "", arrayListOf("Test Z","Test Y", "Test X"))
+        }
     }
 
     fun setFieldConfig(config: FieldConfig) {
@@ -34,7 +30,7 @@ class FieldEntry(context: Context) : ConstraintLayout(context) {
             FieldType.NUMBER -> binding.editNumFieldValue.value()
             FieldType.BOOLEAN -> binding.switchFieldValue.isChecked.toString()
             FieldType.SINGLE_CHOICE -> binding.spnFieldValue.selectedItem.toString()
-            FieldType.MULTI_CHOICE -> TODO()
+            FieldType.MULTI_CHOICE -> binding.msFieldValue.getValues().toJsonString()
             else -> ""
         }
     }
