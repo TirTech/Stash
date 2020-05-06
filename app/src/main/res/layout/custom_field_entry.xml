@@ -1,79 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
+
+<androidx.constraintlayout.widget.ConstraintLayout
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:android="http://schemas.android.com/apk/res/android">
-    <data>
-        <import type="ca.tirtech.stash.database.entity.FieldConfig"/>
-        <import type="ca.tirtech.stash.database.types.FieldType"/>
-        <variable
-                name="config"
-                type="FieldConfig"/>
-    </data>
-    <merge
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    <com.google.android.material.switchmaterial.SwitchMaterial
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-        <com.google.android.material.switchmaterial.SwitchMaterial
-                android:text="@{config.name}"
+            android:layout_height="wrap_content"
+            android:id="@+id/switch_field_value"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+    <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/txtlayout_field_value"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
+        <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/switch_field_value"
-                android:visibility="@{config.type == FieldType.BOOLEAN}"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"/>
-        <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/txtlayout_field_value"
+                android:inputType="textPersonName"
+                android:ems="10"
+                android:id="@+id/edittxt_field_value"/>
+    </com.google.android.material.textfield.TextInputLayout>
+    <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/numlayout_field_value"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
+        <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="@{config.type == FieldType.STRING}"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent">
-            <com.google.android.material.textfield.TextInputEditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="textPersonName"
-                    android:text="@{config.name}"
-                    android:ems="10"
-                    android:id="@+id/edittxt_field_value"/>
-        </com.google.android.material.textfield.TextInputLayout>
-        <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/numlayout_field_value"
-                android:visibility="@{config.type == FieldType.NUMBER}"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent">
-            <com.google.android.material.textfield.TextInputEditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="numberDecimal"
-                    android:ems="10"
-                    android:id="@+id/editNum_field_value"/>
-        </com.google.android.material.textfield.TextInputLayout>
-        <Spinner
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:entries="@{config.choices}"
-                android:visibility="@{config.type == FieldType.SINGLE_CHOICE}"
-                android:id="@+id/spn_field_value"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"/>
-        <ca.tirtech.stash.components.MultSelect
-                android:id="@+id/ms_field_value"
-                android:entries="@{config.choices}"
-                android:visibility="@{config.type == FieldType.MULTI_CHOICE}"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
-    </merge>
-</layout>
+                android:inputType="numberDecimal"
+                android:ems="10"
+                android:id="@+id/editNum_field_value"/>
+    </com.google.android.material.textfield.TextInputLayout>
+    <Spinner
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/spn_field_value"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+    <ca.tirtech.stash.components.MultiSelect
+            android:id="@+id/ms_field_value"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

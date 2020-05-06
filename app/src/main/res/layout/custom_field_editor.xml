@@ -1,25 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
+<LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto">
-    <data>
-
-    </data>
-    <merge
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/ll_fields"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+    <TextView
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
+            android:layout_height="wrap_content"
+            android:text="@string/new_category_basic_detail_header"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+            android:layout_marginBottom="@dimen/item_spacing"/>
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="end"
+            android:layout_marginBottom="@dimen/item_spacing"
+            android:layout_marginStart="@dimen/item_tabbing">
         <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/txtlayout_field_name"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/field_name"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintBottom_toTopOf="@+id/textView2"
-                app:layout_constraintVertical_chainStyle="packed"
                 android:layout_marginBottom="@dimen/item_spacing">
             <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
@@ -28,45 +35,86 @@
                     android:ems="10"
                     android:id="@+id/edittxt_field_name"/>
         </com.google.android.material.textfield.TextInputLayout>
-        <Spinner
-                android:layout_width="0dp"
+
+        <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/spn_field_type"
-                android:spinnerMode="dropdown"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView2"
-                app:layout_constraintVertical_chainStyle="packed"
-                app:layout_constraintBottom_toTopOf="@+id/switch_show_label"
-                android:layout_marginBottom="@dimen/item_spacing"/>
+                android:orientation="horizontal"
+                android:gravity="start"
+                android:layout_marginBottom="@dimen/item_spacing">
+            <TextView
+                    android:text="@string/field_type"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/textView2"
+                    android:layout_marginEnd="@dimen/item_spacing"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"/>
+            <Spinner
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/spn_field_type"
+                    android:spinnerMode="dropdown"/>
+        </LinearLayout>
         <com.google.android.material.switchmaterial.SwitchMaterial
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/switch_show_label"
-                android:text="@string/field_show_as_label"
-                app:layout_constraintTop_toBottomOf="@+id/spn_field_type"
-                android:layout_marginTop="@dimen/item_spacing"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"/>
-        <TextView
-                android:text="@string/field_type"
-                android:layout_width="wrap_content"
+                android:text="@string/field_show_as_label"/>
+    </LinearLayout>
+
+    <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/options"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+            android:layout_marginBottom="@dimen/item_spacing"/>
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="end"
+            android:layout_marginBottom="@dimen/item_spacing"
+            android:layout_marginStart="@dimen/item_tabbing">
+        <ca.tirtech.stash.components.ListBuilder
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/textView2"
-                app:layout_constraintVertical_chainStyle="packed"
-                app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginStart="@dimen/item_spacing"
-                app:layout_constraintTop_toBottomOf="@+id/txtlayout_field_name"
-                app:layout_constraintBottom_toTopOf="@+id/spn_field_type"
-                android:layout_marginBottom="@dimen/item_spacing"
-                android:layout_marginTop="@dimen/item_spacing"/>
+                android:id="@+id/lstb_choices"/>
+    </LinearLayout>
+    <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/new_category_default_value"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+            android:layout_marginBottom="@dimen/item_spacing"/>
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="end"
+            android:layout_marginBottom="@dimen/item_spacing"
+            android:layout_marginStart="@dimen/item_tabbing">
         <ca.tirtech.stash.components.FieldEntry
                 android:id="@+id/fe_default"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginTop="@dimen/item_spacing"
-                app:layout_constraintTop_toBottomOf="@+id/switch_show_label"
-                app:layout_constraintEnd_toEndOf="parent"/>
-    </merge>
-</layout>
+                android:layout_marginBottom="@dimen/item_spacing"/>
+    </LinearLayout>
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="end"
+            android:layout_marginBottom="@dimen/item_spacing">
+        <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_cancel_field_add"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/cancel"
+                android:layout_marginEnd="@dimen/item_spacing"/>
+        <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_confirm_field_add"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/confirm"/>
+    </LinearLayout>
+</LinearLayout>

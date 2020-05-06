@@ -52,10 +52,13 @@ class ItemsFragment : Fragment() {
 
         inner class ItemViewHolder(var binding: ItemRvCardBinding) : RecyclerView.ViewHolder(binding.root)
 
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder = ItemViewHolder(ItemRvCardBinding.inflate(
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder = ItemViewHolder(
+            ItemRvCardBinding.inflate(
                 LayoutInflater.from(context),
                 parent,
-                false))
+                false
+            )
+        )
 
         override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
             val data = items.value!![position]

@@ -65,7 +65,8 @@ class CategoriesFragment : Fragment() {
         }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryViewHolder = CategoryViewHolder(
-                LayoutInflater.from(parent.context).inflate(R.layout.category_rv_card, parent, false) as CardView)
+            LayoutInflater.from(parent.context).inflate(R.layout.category_rv_card, parent, false) as CardView
+        )
 
         override fun onBindViewHolder(holder: CategoryViewHolder, position: Int) {
             val (name, _, id) = categories.value!![position]

@@ -77,7 +77,8 @@
                 android:onClick="@{() -> navController.popBackStack()}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/btn_apply_new_item"
-                app:layout_constraintStart_toStartOf="parent"/>
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginEnd="@dimen/item_spacing"/>
         <com.google.android.material.button.MaterialButton
                 android:text="@string/save"
                 android:layout_width="0dp"
@@ -86,6 +87,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/btn_cancel_new_item"
-                android:onClick="@{fragment::handleSaveClicked}"/>
+                android:onClick="@{fragment::handleSaveClicked}"
+                android:layout_marginStart="@dimen/item_spacing"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

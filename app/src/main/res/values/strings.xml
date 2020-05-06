@@ -23,4 +23,9 @@
     <string name="add">Add</string>
     <string name="remove">Remove</string>
     <string name="add_field">Add Field</string>
+    <string name="confirm">Confirm</string>
+    <string name="lst_editor_entry_text">New Option</string>
+    <string name="options">Options</string>
+    <string name="new_category_basic_detail_header">Basic Details</string>
+    <string name="new_category_default_value">Default Value</string>
 </resources>

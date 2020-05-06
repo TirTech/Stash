@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
@@ -21,7 +20,7 @@ class CollectionFragment : Fragment() {
     private lateinit var navController: NavController
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = FragmentCollectionBinding.inflate(inflater,container,false)
+        binding = FragmentCollectionBinding.inflate(inflater, container, false)
         binding.tabs.apply {
             addTab(newTab().setText(R.string.tab_text_category).also { tabCategories = it })
             addTab(newTab().setText(R.string.tab_text_items).also { tabItems = it })

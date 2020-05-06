@@ -19,8 +19,8 @@ fun JSONArray.merge(other: JSONArray): JSONArray = apply {
 }
 
 fun <T> Collection<T>.toJsonString(): String = stream()
-        .map { it.toString() }
-        .collect({ JSONArray() },
-                 { ja, str -> ja.put(str) },
-                 { a, b -> a.merge(b) })
-        .toString()
+    .map { it.toString() }
+    .collect({ JSONArray() },
+             { ja, str -> ja.put(str) },
+             { a, b -> a.merge(b) })
+    .toString()

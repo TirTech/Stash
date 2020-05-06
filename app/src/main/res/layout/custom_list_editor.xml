@@ -1,36 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge
+<androidx.constraintlayout.widget.ConstraintLayout
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
     <com.google.android.material.button.MaterialButton
             android:text="@string/add"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/btn_multiselect"
+            android:id="@+id/btn_lst_editor_add"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toEndOf="@+id/spn_multiselect"/>
     <com.google.android.material.chip.ChipGroup
-            android:id="@+id/chpgrp_multiselect"
+            android:id="@+id/chpgrp_lst_editor"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginTop="@dimen/item_spacing"
-            app:layout_constraintTop_toBottomOf="@+id/btn_multiselect"
+            app:layout_constraintTop_toBottomOf="@+id/btn_lst_editor_add"
             app:layout_constraintBottom_toBottomOf="parent">
 
     </com.google.android.material.chip.ChipGroup>
-    <Spinner
-            android:id="@+id/spn_multiselect"
+    <com.google.android.material.textfield.TextInputLayout
             android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtlayout_lst_edit_value"
             android:layout_marginEnd="@dimen/item_spacing"
+            android:hint="@string/lst_editor_entry_text"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/btn_multiselect"
-            app:layout_constraintBottom_toBottomOf="@+id/btn_multiselect"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_height="wrap_content"/>
-</merge>
+            app:layout_constraintEnd_toStartOf="@+id/btn_lst_editor_add"
+            app:layout_constraintBottom_toBottomOf="@+id/btn_lst_editor_add"
+            app:layout_constraintTop_toTopOf="parent">
+        <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/txt_lst_edit_value"/>
+    </com.google.android.material.textfield.TextInputLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
