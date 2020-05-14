@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
 import androidx.cardview.widget.CardView
@@ -20,14 +21,19 @@ import ca.tirtech.stash.CollectionModel
 import ca.tirtech.stash.R
 import ca.tirtech.stash.database.entity.Category
 import ca.tirtech.stash.database.entity.CategoryWithSubcategory
-import ca.tirtech.stash.databinding.FragmentCategoriesBinding
 import ca.tirtech.stash.fragments.CategoriesFragment.CategoryAdapter.CategoryViewHolder
 import ca.tirtech.stash.util.MarginItemDecorator
+import ca.tirtech.stash.util.navigateOnClick
+import ca.tirtech.stash.util.setVisibility
+import com.google.android.material.button.MaterialButton
 
 class CategoriesFragment : Fragment() {
     private lateinit var model: CollectionModel
-    private lateinit var binding: FragmentCategoriesBinding
     private lateinit var navController: NavController
+    private lateinit var ghost: ImageView
+    private lateinit var recycler: RecyclerView
+    private lateinit var backButton: ImageView
+    private lateinit var btnAddCategory: MaterialButton
 
     private val backPressedCallback: OnBackPressedCallback = object : OnBackPressedCallback(true) {
         override fun handleOnBackPressed() {
@@ -42,19 +48,27 @@ class CategoriesFragment : Fragment() {
         navController = Navigation.findNavController(container!!)
         val adapter = CategoryAdapter(model.currentCategory)
 
-        binding = FragmentCategoriesBinding.inflate(inflater, container, false).also {
-            it.lifecycleOwner = this
-            it.rvCategoryAdapter = adapter
-            it.navController = navController
-            it.model = model
-            it.rvCategories.also { rv ->
-                rv.layoutManager = LinearLayoutManager(context)
-                rv.adapter = adapter
-                rv.addItemDecoration(MarginItemDecorator(5))
+        val root = inflater.inflate(R.layout.fragment_categories, container, false)
+        ghost = root.findViewById(R.id.iv_categories_ghost)
+        recycler = root.findViewById<RecyclerView>(R.id.rv_categories).also {
+            it.layoutManager = LinearLayoutManager(context)
+            it.adapter = adapter
+            it.addItemDecoration(MarginItemDecorator(5))
+        }
+        backButton = root.findViewById<ImageView>(R.id.btn_up_category).also {
+            it.setOnClickListener {
+                model.traverseToParentCategory()
             }
         }
+        btnAddCategory = root.findViewById<MaterialButton>(R.id.btn_add_category)
+            .navigateOnClick(navController, R.id.action_categoriesFragment_to_newCategoryFragment)
 
-        return binding.root
+        model.currentCategory.observe(viewLifecycleOwner, Observer {
+            recycler.setVisibility(it.subcategories.isNotEmpty())
+            ghost.setVisibility(it.subcategories.isEmpty())
+        })
+
+        return root
     }
 
     inner class CategoryAdapter(currentCategory: LiveData<CategoryWithSubcategory>) : RecyclerView.Adapter<CategoryViewHolder>() {

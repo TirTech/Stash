@@ -14,6 +14,7 @@ import ca.tirtech.stash.components.FieldConfigEditor
 import ca.tirtech.stash.database.AppDatabase.Companion.db
 import ca.tirtech.stash.database.entity.Category
 import ca.tirtech.stash.database.repositories.Repository
+import ca.tirtech.stash.util.navigateOnClick
 import ca.tirtech.stash.util.value
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.snackbar.Snackbar
@@ -31,9 +32,7 @@ class NewCategoryFragment : Fragment() {
         model = ViewModelProvider(requireActivity()).get(CollectionModel::class.java)
         navController = Navigation.findNavController(container!!)
         val root = inflater.inflate(R.layout.fragment_new_category, container, false)
-        btnCancel = root.findViewById<MaterialButton>(R.id.btn_cancel_new_category).apply {
-            setOnClickListener { navController.popBackStack() }
-        }
+        btnCancel = root.findViewById<MaterialButton>(R.id.btn_cancel_new_category).navigateOnClick(navController)
         btnSave = root.findViewById<MaterialButton>(R.id.btn_apply_new_category).apply {
             setOnClickListener(this@NewCategoryFragment::handleSaveClicked)
         }

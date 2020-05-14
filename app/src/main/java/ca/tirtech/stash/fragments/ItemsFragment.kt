@@ -20,6 +20,7 @@ import ca.tirtech.stash.R
 import ca.tirtech.stash.database.entity.Item
 import ca.tirtech.stash.fragments.ItemsFragment.ItemAdapter.ItemViewHolder
 import ca.tirtech.stash.util.MarginItemDecorator
+import ca.tirtech.stash.util.navigateOnClick
 import ca.tirtech.stash.util.setVisibility
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.card.MaterialCardView
@@ -36,18 +37,15 @@ class ItemsFragment : Fragment() {
         navController = Navigation.findNavController(container!!)
         val adapter = ItemAdapter(model.items)
 
-        val root = inflater.inflate(R.layout.fragment_items,container,false)
+        val root = inflater.inflate(R.layout.fragment_items, container, false)
         ghost = root.findViewById(R.id.iv_items_ghost)
         recycler = root.findViewById<RecyclerView>(R.id.rv_items).also {
             it.layoutManager = LinearLayoutManager(context)
             it.adapter = adapter
             it.addItemDecoration(MarginItemDecorator(5))
         }
-        btnAddItem = root.findViewById<MaterialButton>(R.id.btn_add_item).also {
-            it.setOnClickListener {
-                navController.navigate(R.id.action_itemsFragment_to_newItemFragment)
-            }
-        }
+        btnAddItem = root.findViewById<MaterialButton>(R.id.btn_add_item)
+            .navigateOnClick(navController, R.id.action_itemsFragment_to_newItemFragment)
 
         model.items.observe(viewLifecycleOwner, Observer {
             recycler.setVisibility(it.isNotEmpty())

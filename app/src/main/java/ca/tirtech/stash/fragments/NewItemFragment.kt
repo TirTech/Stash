@@ -19,6 +19,7 @@ import ca.tirtech.stash.database.entity.FieldValue
 import ca.tirtech.stash.database.entity.Item
 import ca.tirtech.stash.database.repositories.Repository
 import ca.tirtech.stash.database.types.FieldType
+import ca.tirtech.stash.util.navigateOnClick
 import ca.tirtech.stash.util.value
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.snackbar.Snackbar
@@ -46,9 +47,7 @@ class NewItemFragment : Fragment() {
         val root = inflater.inflate(R.layout.fragment_new_item, container, false)
         itemTitle = root.findViewById(R.id.edittxt_item_title)
         itemDescription = root.findViewById(R.id.edittxt_item_description)
-        btnCancel = root.findViewById<MaterialButton>(R.id.btn_cancel_new_item).apply {
-            setOnClickListener { navController.popBackStack() }
-        }
+        btnCancel = root.findViewById<MaterialButton>(R.id.btn_cancel_new_item).navigateOnClick(navController)
         btnSave = root.findViewById<MaterialButton>(R.id.btn_apply_new_item).apply {
             setOnClickListener(this@NewItemFragment::handleSaveClicked)
         }
