@@ -5,7 +5,7 @@ import ca.tirtech.stash.util.fromJsonString
 import org.json.JSONArray
 import java.util.*
 
-object RoomConverters {
+class RoomConverters {
     @TypeConverter
     fun arrayListToString(list: ArrayList<String>?): String = JSONArray(list).toString()
 

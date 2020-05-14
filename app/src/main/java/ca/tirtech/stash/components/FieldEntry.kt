@@ -16,7 +16,8 @@ import com.google.android.material.switchmaterial.SwitchMaterial
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 
-class FieldEntry(context: Context, attrs: AttributeSet) : ConstraintLayout(context, attrs) {
+class FieldEntry(context: Context, attrs: AttributeSet?) : ConstraintLayout(context, attrs) {
+
     private val switchValue: SwitchMaterial
     private val textValue: TextInputEditText
     private val numValue: TextInputEditText
@@ -65,6 +66,8 @@ class FieldEntry(context: Context, attrs: AttributeSet) : ConstraintLayout(conte
         this.config = config
         refresh()
     }
+
+    fun getFieldConfig(): FieldConfig = this.config
 
     fun getValue(): String = when (config.type) {
         FieldType.STRING -> textValue.value()

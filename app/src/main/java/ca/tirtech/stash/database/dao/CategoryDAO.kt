@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.room.*
 import ca.tirtech.stash.database.entity.Category
 import ca.tirtech.stash.database.entity.CategoryWithSubcategory
+import ca.tirtech.stash.database.entity.FieldConfig
 
 @Dao
 interface CategoryDAO {
@@ -19,7 +20,7 @@ interface CategoryDAO {
     fun getAllCategories(): List<Category>
 
     @Insert
-    fun insertCategory(category: Category)
+    fun insertCategory(category: Category): Long
 
     @Update
     fun updateCategory(category: Category)

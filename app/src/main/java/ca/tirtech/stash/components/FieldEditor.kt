@@ -25,7 +25,7 @@ class FieldEditor(context: Context, attrs: AttributeSet) : ConstraintLayout(cont
     private val fieldEntry: FieldEntry
     private val listEditor: ListBuilder
 
-    private val config: FieldConfig = FieldConfig("Default", FieldType.STRING, null, false, "", ArrayList())
+    private var config: FieldConfig = FieldConfig("Default", FieldType.STRING, null, false, "", ArrayList())
     var onCancelFunc: () -> Unit = {}
     var onConfirmFunc: (FieldConfig) -> Unit = {}
 
@@ -51,7 +51,10 @@ class FieldEditor(context: Context, attrs: AttributeSet) : ConstraintLayout(cont
         }
         lblShow = root.findViewById<SwitchMaterial>(R.id.switch_show_label)
         btnCancel = root.findViewById<MaterialButton>(R.id.btn_cancel_field_add).apply {
-            setOnClickListener { onCancelFunc() }
+            setOnClickListener {
+                onCancelFunc()
+                resetConfig()
+            }
         }
         btnConfirm = root.findViewById<MaterialButton>(R.id.btn_confirm_field_add).apply {
             setOnClickListener {
@@ -60,7 +63,14 @@ class FieldEditor(context: Context, attrs: AttributeSet) : ConstraintLayout(cont
                     showAsLabel = lblShow.isChecked
                     defaultValue = fieldEntry.getValue()
                 })
+                resetConfig()
             }
         }
+    }
+
+    fun resetConfig() {
+        config = FieldConfig("Default", FieldType.STRING, null, false, "", ArrayList())
+        fieldEntry.setFieldConfig(config)
+        fieldEntry.refresh()
     }
 }

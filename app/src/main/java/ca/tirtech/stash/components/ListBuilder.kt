@@ -10,7 +10,9 @@ import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.google.android.material.textfield.TextInputEditText
 
-class ListBuilder(context: Context, attrs: AttributeSet) : ConstraintLayout(context, attrs) {
+class ListBuilder(context: Context?, attrs: AttributeSet?) : ConstraintLayout(context, attrs) {
+    constructor(context: Context?) : this(context, null)
+
     private val chips: HashMap<Chip, String> = HashMap()
     private val txtValue: TextInputEditText
     private val btnAdd: MaterialButton

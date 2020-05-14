@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:paddingVertical="@dimen/activity_vertical_margin"
+        android:paddingHorizontal="@dimen/activity_horizontal_margin">
+
+    <TextView
+            android:id="@+id/tv_item_detail_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/item_title"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+            android:layout_marginBottom="@dimen/item_spacing"/>
+
+    <TextView
+            android:id="@+id/tv_item_detail_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/item_description"
+            android:layout_marginStart="@dimen/item_tabbing"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+            android:layout_marginBottom="@dimen/item_spacing"/>
+
+    <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/item_detail_fields"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+            android:layout_marginBottom="@dimen/item_spacing"/>
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="end"
+            android:layout_marginBottom="@dimen/item_spacing"
+            android:layout_marginStart="@dimen/item_tabbing"
+            android:id="@+id/ll_item_detail_fields">
+    </LinearLayout>
+</LinearLayout>

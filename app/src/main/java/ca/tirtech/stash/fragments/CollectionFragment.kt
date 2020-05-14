@@ -48,6 +48,7 @@ class CollectionFragment : Fragment() {
                     }
                     R.id.newCategoryFragment -> binding.showTabs = false
                     R.id.newItemFragment -> binding.showTabs = false
+                    R.id.itemDetailFragment -> binding.showTabs = false
                     else -> Unit
                 }
                 binding.invalidateAll()

@@ -27,7 +27,7 @@ class MultiSelect(context: Context, attrs: AttributeSet) : ConstraintLayout(cont
         }
     }
 
-    fun getValues(): ArrayList<Any> = arrayListOf(chips.values)
+    fun getValues(): ArrayList<Any> = ArrayList<Any>().also{ it.addAll(chips.values)}
 
     fun setEntries(lst: List<Any>) {
         spinner.setEntries(lst)

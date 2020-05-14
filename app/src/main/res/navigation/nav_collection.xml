@@ -38,6 +38,13 @@
                 app:exitAnim="@android:anim/fade_out"
                 app:popEnterAnim="@android:anim/fade_in"
                 app:popExitAnim="@android:anim/fade_out"/>
+        <action
+                android:id="@+id/action_itemsFragment_to_itemDetailFragment"
+                app:destination="@id/itemDetailFragment"
+                app:enterAnim="@android:anim/fade_in"
+                app:exitAnim="@android:anim/fade_out"
+                app:popEnterAnim="@android:anim/fade_in"
+                app:popExitAnim="@android:anim/fade_out"/>
     </fragment>
     <fragment
             android:id="@+id/newCategoryFragment"
@@ -47,4 +54,8 @@
             android:id="@+id/newItemFragment"
             android:name="ca.tirtech.stash.fragments.NewItemFragment"
             android:label="NewItemFragment"/>
+    <fragment
+            android:id="@+id/itemDetailFragment"
+            android:name="ca.tirtech.stash.fragments.ItemDetailFragment"
+            android:label="ItemDetailFragment"/>
 </navigation>
