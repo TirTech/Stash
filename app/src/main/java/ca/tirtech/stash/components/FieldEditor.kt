@@ -61,7 +61,7 @@ class FieldEditor(context: Context, attrs: AttributeSet) : ConstraintLayout(cont
                 onConfirmFunc(config.apply {
                     name = txtFieldName.value()
                     showAsLabel = lblShow.isChecked
-                    defaultValue = fieldEntry.getValue()
+                    defaultValue = fieldEntry.getValue().value
                 })
                 resetConfig()
             }

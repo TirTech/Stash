@@ -46,4 +46,9 @@ object Repository {
             db.runInTransaction(f)
         }
     }
+
+    fun updateItemWithFields(item: Item, values: List<FieldValue>) = transactionInCoroutine {
+        db.itemDAO().updateItem(item)
+        values.forEach { db.fieldValueDAO().updateFieldValue(it) }
+    }
 }

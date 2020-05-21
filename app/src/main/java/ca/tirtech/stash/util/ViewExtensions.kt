@@ -3,15 +3,28 @@ package ca.tirtech.stash.util
 import android.app.Activity
 import android.content.Context
 import android.content.ContextWrapper
+import android.widget.ArrayAdapter
 import android.widget.EditText
+import android.widget.Spinner
 import androidx.annotation.IdRes
 import androidx.lifecycle.LifecycleOwner
 import androidx.navigation.NavController
 import com.google.android.material.button.MaterialButton
 
+/**
+ * Get the value of this text field
+ *
+ * @return the field's value
+ */
 fun EditText.value(): String {
     return this.text.toString()
 }
+
+fun Spinner.getEntries(): List<*> = adapter.run {
+    if (this is ArrayAdapter<*>) this.getEntries() else ArrayList<Any>()
+}
+
+fun <T:Any> ArrayAdapter<T>.getEntries(): List<T> = (0 until count).mapNotNull { getItem(it) }
 
 /**
  * Assign a navigation destination to be navigated to when this button is clicked. If `action` is null, the controller will

@@ -1335,16 +1335,6 @@
     <inspection_tool class="GwtUiFieldErrors" enabled="true" level="ERROR" enabled_by_default="true" />
     <inspection_tool class="GwtUiHandlerErrors" enabled="true" level="ERROR" enabled_by_default="true" />
     <inspection_tool class="GwtUiXmlReferences" enabled="true" level="ERROR" enabled_by_default="true" />
-    <inspection_tool class="HCLBlockConflictingProperties" enabled="true" level="ERROR" enabled_by_default="true" />
-    <inspection_tool class="HCLBlockMissingProperty" enabled="true" level="WARNING" enabled_by_default="true" />
-    <inspection_tool class="HCLDeprecatedElement" enabled="true" level="WEAK WARNING" enabled_by_default="true" />
-    <inspection_tool class="HCLSimplifyExpression" enabled="true" level="WEAK WARNING" enabled_by_default="true" />
-    <inspection_tool class="HCLUnknownBlockType" enabled="true" level="WARNING" enabled_by_default="true" />
-    <inspection_tool class="HILConvertToHCL" enabled="true" level="WEAK WARNING" enabled_by_default="true" />
-    <inspection_tool class="HILMissingSelfInContext" enabled="true" level="ERROR" enabled_by_default="true" />
-    <inspection_tool class="HILOperationTypesMismatch" enabled="true" level="ERROR" enabled_by_default="true" />
-    <inspection_tool class="HILUnknownResourceType" enabled="true" level="WARNING" enabled_by_default="true" />
-    <inspection_tool class="HILUnresolvedReference" enabled="true" level="ERROR" enabled_by_default="true" />
     <inspection_tool class="HamlNestedTagContent" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="HardCodedStringLiteral" enabled="false" level="WARNING" enabled_by_default="false">
       <option name="ignoreForAssertStatements" value="true" />
@@ -2865,15 +2855,6 @@
     <inspection_tool class="SystemProperties" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="SystemRunFinalizersOnExit" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="SystemSetSecurityManager" enabled="false" level="WARNING" enabled_by_default="false" />
-    <inspection_tool class="TFBlockNameValidness" enabled="true" level="ERROR" enabled_by_default="true" />
-    <inspection_tool class="TFDuplicatedBlockProperty" enabled="true" level="ERROR" enabled_by_default="true" />
-    <inspection_tool class="TFDuplicatedOutput" enabled="true" level="ERROR" enabled_by_default="true" />
-    <inspection_tool class="TFDuplicatedProvider" enabled="true" level="ERROR" enabled_by_default="true" />
-    <inspection_tool class="TFDuplicatedVariable" enabled="true" level="ERROR" enabled_by_default="true" />
-    <inspection_tool class="TFIncorrectVariableType" enabled="true" level="ERROR" enabled_by_default="true" />
-    <inspection_tool class="TFMissingModule" enabled="true" level="WARNING" enabled_by_default="true" />
-    <inspection_tool class="TFNoInterpolationsAllowed" enabled="true" level="ERROR" enabled_by_default="true" />
-    <inspection_tool class="TFVARSIncorrectElement" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="TaglibDomModelInspection" enabled="true" level="ERROR" enabled_by_default="true" />
     <inspection_tool class="TailRecursion" enabled="true" level="INFORMATION" enabled_by_default="true" />
     <inspection_tool class="TailRecursionJS" enabled="false" level="WARNING" enabled_by_default="false" />
@@ -3226,5 +3207,17 @@
       </option>
     </inspection_tool>
     <inspection_tool class="gwtRawAsyncCallback" enabled="true" level="WARNING" enabled_by_default="true" />
+    <inspection_tool class="unused" enabled="false" level="WARNING" enabled_by_default="false">
+      <option name="LOCAL_VARIABLE" value="true" />
+      <option name="FIELD" value="true" />
+      <option name="METHOD" value="true" />
+      <option name="CLASS" value="true" />
+      <option name="PARAMETER" value="true" />
+      <option name="REPORT_PARAMETER_FOR_PUBLIC_METHODS" value="true" />
+      <option name="ADD_MAINS_TO_ENTRIES" value="true" />
+      <option name="ADD_APPLET_TO_ENTRIES" value="true" />
+      <option name="ADD_SERVLET_TO_ENTRIES" value="true" />
+      <option name="ADD_NONJAVA_TO_ENTRIES" value="true" />
+    </inspection_tool>
   </profile>
 </component>

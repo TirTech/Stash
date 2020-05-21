@@ -5,6 +5,7 @@ import android.util.AttributeSet
 import android.widget.Spinner
 import androidx.constraintlayout.widget.ConstraintLayout
 import ca.tirtech.stash.R
+import ca.tirtech.stash.util.getEntries
 import ca.tirtech.stash.util.setEntries
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.chip.Chip
@@ -33,14 +34,19 @@ class MultiSelect(context: Context, attrs: AttributeSet) : ConstraintLayout(cont
         spinner.setEntries(lst)
     }
 
-    private fun addChip() = Chip(context).also { chip ->
-        chip.text = spinner.selectedItem.toString()
+    private fun addChip(text: String = spinner.selectedItem.toString(), item: Any = spinner.selectedItem) = Chip(context).also { chip ->
+        chip.text = text
         chip.isCloseIconVisible = true
         chip.setOnCloseIconClickListener {
             chips.remove(chip)
             chipGroup.removeView(chip)
         }
-        chips[chip] = spinner.selectedItem
+        chips[chip] = item
         chipGroup.addView(chip)
+    }
+
+    fun setSelection(items: List<Any>) {
+        val entries = spinner.getEntries()
+        items.filter { entries.contains(it) }.forEach { addChip(it.toString(), it) }
     }
 }

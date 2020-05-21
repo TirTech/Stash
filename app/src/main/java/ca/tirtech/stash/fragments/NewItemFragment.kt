@@ -1,7 +1,6 @@
 package ca.tirtech.stash.fragments
 
 import android.os.Bundle
-import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,24 +10,20 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import ca.tirtech.stash.CollectionModel
 import ca.tirtech.stash.R
-import ca.tirtech.stash.components.FieldEditor
 import ca.tirtech.stash.components.FieldEntry
 import ca.tirtech.stash.database.AppDatabase.Companion.db
 import ca.tirtech.stash.database.entity.FieldConfig
 import ca.tirtech.stash.database.entity.FieldValue
 import ca.tirtech.stash.database.entity.Item
+import ca.tirtech.stash.database.entity.ItemWithFieldValuesAndConfigs
 import ca.tirtech.stash.database.repositories.Repository
-import ca.tirtech.stash.database.types.FieldType
 import ca.tirtech.stash.util.navigateOnClick
 import ca.tirtech.stash.util.value
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
-import kotlinx.android.synthetic.main.fragment_new_item.*
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.NonCancellable.invokeOnCompletion
 import kotlinx.coroutines.launch
 
 class NewItemFragment : Fragment() {
@@ -40,6 +35,7 @@ class NewItemFragment : Fragment() {
     private lateinit var itemDescription: TextInputEditText
     private var fieldEntries: ArrayList<FieldEntry> = ArrayList()
     private lateinit var entryContainer: ViewGroup
+    private var editingItem: ItemWithFieldValuesAndConfigs? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         navController = Navigation.findNavController(container!!)
@@ -52,8 +48,20 @@ class NewItemFragment : Fragment() {
             setOnClickListener(this@NewItemFragment::handleSaveClicked)
         }
         entryContainer = root.findViewById(R.id.editor_container)
+
+        val editId = arguments?.getInt(ITEM_ID)
+
         CoroutineScope(Dispatchers.Main).launch {
-            Repository.getCategoryFieldConfigsForItem(model.currentCategory.value!!.category.id).forEach { addEditor(it) }
+            if (editId == null) {
+                Repository.getCategoryFieldConfigsForItem(model.currentCategory.value!!.category.id).forEach { addEditor(it) }
+            } else {
+                db.itemDAO().getItemWithFieldValuesAndConfigs(editId)?.also {
+                    this@NewItemFragment.editingItem = it
+                    itemTitle.setText(it.item.title)
+                    itemDescription.setText(it.item.description)
+                    it.fieldValues.forEach { fv -> addEditor(fv.fieldConfig, fv.fieldValue) }
+                }
+            }
         }
         return root
     }
@@ -63,20 +71,32 @@ class NewItemFragment : Fragment() {
         val description = itemDescription.value()
         if (title.isNotEmpty()) {
             if (description.isNotEmpty()) {
-                Repository.createItemWithFields(
-                    Item(model.currentCategory.value!!.category.id, title, description),
-                    fieldEntries.map { FieldValue(it.getFieldConfig().id,it.getValue(),0) }
-                )
+                if (editingItem == null) {
+                    Repository.createItemWithFields(
+                        Item(model.currentCategory.value!!.category.id, title, description),
+                        fieldEntries.map { it.getValue() }
+                    )
+                } else {
+                    editingItem?.also { ei ->
+                        ei.item.title = title
+                        ei.item.description = description
+                        Repository.updateItemWithFields(ei.item, fieldEntries.map {it.getValue()})
+                    }
+                }
                 navController.popBackStack()
             } else Snackbar.make(view, R.string.new_item_description_invalid, Snackbar.LENGTH_LONG).show()
         } else Snackbar.make(view, R.string.new_item_title_invalid, Snackbar.LENGTH_LONG).show()
     }
 
-    fun addEditor(config: FieldConfig) {
+    private fun addEditor(config: FieldConfig, fieldValue: FieldValue? = null) {
         val entry = FieldEntry(context!!,null)
         entryContainer.addView(entry,ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT))
         entry.setPadding(0,0,0,resources.getDimensionPixelSize(R.dimen.item_spacing))
-        entry.setFieldConfig(config)
+        entry.setFieldConfig(config, fieldValue)
         fieldEntries.add(entry)
+    }
+
+    companion object {
+        const val ITEM_ID = "ITEM_ID"
     }
 }
