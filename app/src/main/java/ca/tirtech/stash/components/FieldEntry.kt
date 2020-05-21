@@ -7,11 +7,9 @@ import android.widget.Spinner
 import androidx.constraintlayout.widget.ConstraintLayout
 import ca.tirtech.stash.R
 import ca.tirtech.stash.database.entity.FieldConfig
+import ca.tirtech.stash.database.entity.FieldValue
 import ca.tirtech.stash.database.types.FieldType
-import ca.tirtech.stash.util.setEntries
-import ca.tirtech.stash.util.setVisibility
-import ca.tirtech.stash.util.toJsonString
-import ca.tirtech.stash.util.value
+import ca.tirtech.stash.util.*
 import com.google.android.material.switchmaterial.SwitchMaterial
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
@@ -26,6 +24,8 @@ class FieldEntry(context: Context, attrs: AttributeSet?) : ConstraintLayout(cont
     private var config: FieldConfig = FieldConfig("Dummy", FieldType.MULTI_CHOICE, null, false, "", arrayListOf("Test Z", "Test Y", "Test X"))
     private val textValueLayout: TextInputLayout
     private val numValueLayout: TextInputLayout
+    private lateinit var editingValue: FieldValue
+
 
     init {
         val root = View.inflate(context, R.layout.custom_field_entry, this)
@@ -36,44 +36,59 @@ class FieldEntry(context: Context, attrs: AttributeSet?) : ConstraintLayout(cont
         numValueLayout = root.findViewById(R.id.numlayout_field_value)
         spnSingle = root.findViewById(R.id.spn_field_value)
         msMulti = root.findViewById(R.id.ms_field_value)
-        refresh()
     }
 
     fun refresh() {
-        switchValue.apply {
-            text = config.name
-            setVisibility(config.type == FieldType.BOOLEAN)
-        }
-        textValueLayout.apply {
-            hint = config.name
-            setVisibility(config.type == FieldType.STRING)
-        }
-        numValueLayout.apply {
-            hint = config.name
-            setVisibility(config.type == FieldType.NUMBER)
-        }
-        spnSingle.apply {
-            setEntries(config.choices)
-            setVisibility(config.type == FieldType.SINGLE_CHOICE)
-        }
-        msMulti.apply {
-            setEntries(config.choices)
-            setVisibility(config.type == FieldType.MULTI_CHOICE)
+        switchValue.setVisibility(false)
+        textValueLayout.setVisibility(false)
+        numValueLayout.setVisibility(false)
+        spnSingle.setVisibility(false)
+        msMulti.setVisibility(false)
+
+        when (config.type) {
+            FieldType.STRING -> textValueLayout.apply {
+                hint = config.name
+                setVisibility(true)
+                editText?.setText(editingValue.value)
+            }
+            FieldType.NUMBER -> numValueLayout.apply {
+                hint = config.name
+                setVisibility(true)
+                editText?.setText(editingValue.value)
+            }
+            FieldType.BOOLEAN -> switchValue.apply {
+                text = config.name
+                setVisibility(true)
+                isChecked = editingValue.value.toBoolean()
+            }
+            FieldType.SINGLE_CHOICE -> spnSingle.apply {
+                setEntries(config.choices)
+                setVisibility(true)
+                setSelection(config.choices.indexOf(editingValue.value))
+            }
+            FieldType.MULTI_CHOICE -> msMulti.apply {
+                setEntries(config.choices)
+                setVisibility(true)
+                setSelection(ArrayList<String>().fromJsonString(editingValue.value))
+            }
         }
     }
 
-    fun setFieldConfig(config: FieldConfig) {
+    fun setFieldConfig(config: FieldConfig, value: FieldValue? = null) {
         this.config = config
+        this.editingValue = value ?: FieldValue(config.id, config.defaultValue, -1)
         refresh()
     }
 
     fun getFieldConfig(): FieldConfig = this.config
 
-    fun getValue(): String = when (config.type) {
-        FieldType.STRING -> textValue.value()
-        FieldType.NUMBER -> numValue.value()
-        FieldType.BOOLEAN -> switchValue.isChecked.toString()
-        FieldType.SINGLE_CHOICE -> spnSingle.selectedItem.toString()
-        FieldType.MULTI_CHOICE -> msMulti.getValues().toJsonString()
+    fun getValue(): FieldValue = editingValue.apply {
+        value = when (config.type) {
+            FieldType.STRING -> textValue.value()
+            FieldType.NUMBER -> numValue.value()
+            FieldType.BOOLEAN -> switchValue.isChecked.toString()
+            FieldType.SINGLE_CHOICE -> spnSingle.selectedItem.toString()
+            FieldType.MULTI_CHOICE -> msMulti.getValues().toJsonString()
+        }
     }
 }

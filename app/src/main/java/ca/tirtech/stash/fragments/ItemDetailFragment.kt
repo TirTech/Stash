@@ -4,10 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import ca.tirtech.stash.R
 import ca.tirtech.stash.components.ChipList
 import ca.tirtech.stash.database.AppDatabase.Companion.db
@@ -24,13 +27,23 @@ class ItemDetailFragment : Fragment() {
     private lateinit var tvTitle: TextView
     private lateinit var tvDesc: TextView
     private lateinit var detailContainer: LinearLayout
+    private lateinit var btnEdit: ImageView
+    private lateinit var navController: NavController
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val root = inflater.inflate(R.layout.fragment_item_details, container, false)
         val itemId = requireArguments().getInt(ITEM_ID)
         detailContainer = root.findViewById(R.id.ll_item_detail_fields)
+        navController = Navigation.findNavController(container!!)
         tvTitle = root.findViewById(R.id.tv_item_detail_title)
         tvDesc = root.findViewById(R.id.tv_item_detail_description)
+        btnEdit = root.findViewById<ImageView>(R.id.iv_edit_item).also {
+            it.setOnClickListener {
+                val b = Bundle()
+                b.putInt(NewItemFragment.ITEM_ID, item.item.id)
+                navController.navigate(R.id.action_itemDetailFragment_to_newItemFragment, b)
+            }
+        }
 
         CoroutineScope(Dispatchers.Main).launch {
             db.itemDAO().getItemWithFieldValuesAndConfigs(itemId)?.also {
