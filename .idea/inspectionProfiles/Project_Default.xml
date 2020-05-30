@@ -1335,6 +1335,16 @@
     <inspection_tool class="GwtUiFieldErrors" enabled="true" level="ERROR" enabled_by_default="true" />
     <inspection_tool class="GwtUiHandlerErrors" enabled="true" level="ERROR" enabled_by_default="true" />
     <inspection_tool class="GwtUiXmlReferences" enabled="true" level="ERROR" enabled_by_default="true" />
+    <inspection_tool class="HCLBlockConflictingProperties" enabled="false" level="ERROR" enabled_by_default="false" />
+    <inspection_tool class="HCLBlockMissingProperty" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="HCLDeprecatedElement" enabled="false" level="WEAK WARNING" enabled_by_default="false" />
+    <inspection_tool class="HCLSimplifyExpression" enabled="false" level="WEAK WARNING" enabled_by_default="false" />
+    <inspection_tool class="HCLUnknownBlockType" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="HILConvertToHCL" enabled="false" level="WEAK WARNING" enabled_by_default="false" />
+    <inspection_tool class="HILMissingSelfInContext" enabled="false" level="ERROR" enabled_by_default="false" />
+    <inspection_tool class="HILOperationTypesMismatch" enabled="false" level="ERROR" enabled_by_default="false" />
+    <inspection_tool class="HILUnknownResourceType" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="HILUnresolvedReference" enabled="false" level="ERROR" enabled_by_default="false" />
     <inspection_tool class="HamlNestedTagContent" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="HardCodedStringLiteral" enabled="false" level="WARNING" enabled_by_default="false">
       <option name="ignoreForAssertStatements" value="true" />
@@ -2033,7 +2043,7 @@
     <inspection_tool class="NullArgumentToVariableArgMethod" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="NullChecksToSafeCall" enabled="true" level="WEAK WARNING" enabled_by_default="true" />
     <inspection_tool class="NullThrown" enabled="false" level="WARNING" enabled_by_default="false" />
-    <inspection_tool class="NullableBooleanElvis" enabled="true" level="INFO" enabled_by_default="true" />
+    <inspection_tool class="NullableBooleanElvis" enabled="false" level="INFO" enabled_by_default="false" />
     <inspection_tool class="NullableProblems" enabled="true" level="WARNING" enabled_by_default="true">
       <option name="REPORT_NULLABLE_METHOD_OVERRIDES_NOTNULL" value="true" />
       <option name="REPORT_NOT_ANNOTATED_METHOD_OVERRIDES_NOTNULL" value="true" />
@@ -2855,6 +2865,15 @@
     <inspection_tool class="SystemProperties" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="SystemRunFinalizersOnExit" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="SystemSetSecurityManager" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="TFBlockNameValidness" enabled="false" level="ERROR" enabled_by_default="false" />
+    <inspection_tool class="TFDuplicatedBlockProperty" enabled="false" level="ERROR" enabled_by_default="false" />
+    <inspection_tool class="TFDuplicatedOutput" enabled="false" level="ERROR" enabled_by_default="false" />
+    <inspection_tool class="TFDuplicatedProvider" enabled="false" level="ERROR" enabled_by_default="false" />
+    <inspection_tool class="TFDuplicatedVariable" enabled="false" level="ERROR" enabled_by_default="false" />
+    <inspection_tool class="TFIncorrectVariableType" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="TFMissingModule" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="TFNoInterpolationsAllowed" enabled="false" level="ERROR" enabled_by_default="false" />
+    <inspection_tool class="TFVARSIncorrectElement" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="TaglibDomModelInspection" enabled="true" level="ERROR" enabled_by_default="true" />
     <inspection_tool class="TailRecursion" enabled="true" level="INFORMATION" enabled_by_default="true" />
     <inspection_tool class="TailRecursionJS" enabled="false" level="WARNING" enabled_by_default="false" />

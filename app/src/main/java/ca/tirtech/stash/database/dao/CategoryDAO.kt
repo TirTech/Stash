@@ -10,7 +10,7 @@ import ca.tirtech.stash.database.entity.FieldConfig
 interface CategoryDAO {
     @Transaction
     @Query("SELECT * FROM Category WHERE id==:id")
-    fun getCategoryWithSubcategories(id: Int): LiveData<CategoryWithSubcategory>
+    fun getCategoryWithSubcategories(id: Int): CategoryWithSubcategory
 
     @Query("SELECT * FROM Category WHERE parentId is NULL")
     @Transaction

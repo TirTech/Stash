@@ -5,9 +5,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.fragment.NavHostFragment
+import ca.tirtech.stash.CollectionModel
 import ca.tirtech.stash.R
 import ca.tirtech.stash.databinding.FragmentCollectionBinding
 import com.google.android.material.tabs.TabLayout
@@ -18,8 +21,13 @@ class CollectionFragment : Fragment() {
     private lateinit var tabCategories: TabLayout.Tab
     private lateinit var tabItems: TabLayout.Tab
     private lateinit var navController: NavController
+    private lateinit var model: CollectionModel
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        model = ViewModelProvider(requireActivity()).get(CollectionModel::class.java)
+        model.currentCategory.observe(viewLifecycleOwner, Observer {
+            binding.collectionBreadcrumbs.setCrumbs(model.categoryStack.map { it.category.name })
+        })
         binding = FragmentCollectionBinding.inflate(inflater, container, false)
         binding.tabs.apply {
             addTab(newTab().setText(R.string.tab_text_category).also { tabCategories = it })
@@ -54,6 +62,7 @@ class CollectionFragment : Fragment() {
                 binding.invalidateAll()
             }
         }
+        binding.collectionBreadcrumbs.setCrumbs(arrayListOf("Test Top"))
         return binding.root
     }
 }
