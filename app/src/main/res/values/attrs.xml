@@ -3,6 +3,6 @@
     <declare-styleable name="MultiSelect">
         <attr name="android:entries"/>
     </declare-styleable>
-    <declare-styleable name="FieldEntry"></declare-styleable>
-    <declare-styleable name="FieldEditor"></declare-styleable>
+    <declare-styleable name="FieldEntry"/>
+    <declare-styleable name="FieldEditor"/>
 </resources>

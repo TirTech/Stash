@@ -50,6 +50,11 @@ class FieldConfigEditor(context: Context, attr: AttributeSet) : ConstraintLayout
 
     fun getConfigs() = adapter.configs.toList()
 
+    fun setConfigs(configs: List<FieldConfig>) {
+        adapter.configs.clear()
+        adapter.configs.addAll(configs)
+    }
+
     private fun setEditorVisible(visible: Boolean) {
         editor.setVisibility(visible)
         rvConfigs.setVisibility(!visible)

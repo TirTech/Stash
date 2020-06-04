@@ -1,20 +1,19 @@
 package ca.tirtech.stash
 
-import android.util.Log
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import ca.tirtech.stash.database.AppDatabase.Companion.db
 import ca.tirtech.stash.database.entity.CategoryWithSubcategory
-import ca.tirtech.stash.util.peekOrNull
 import ca.tirtech.stash.util.popTo
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.launch
 import java.util.*
 
 class CollectionModel : ViewModel() {
 
     private val database = db
-    private val selectedCategoryId = MutableLiveData<Int>(0)
+    private val selectedCategoryId = MutableLiveData(0)
     val currentCategory = Transformations.map(selectedCategoryId, this::mapIdToCategory)
     var categoryStack: Stack<CategoryWithSubcategory> = Stack()
     val items = Transformations.switchMap(selectedCategoryId) { id: Int -> database.itemDAO().getItemsForCategory(id) }
@@ -34,6 +33,12 @@ class CollectionModel : ViewModel() {
         database.categoryDAO().getRootCategory()?.let { selectedCategoryId.value = it.category.id }
     }
 
+    fun refreshCategory() {
+         MainScope().launch {
+            selectedCategoryId.value = selectedCategoryId.value
+        }
+    }
+
     private fun solveCategoryStack(change: CategoryWithSubcategory) {
         /*Cases:
             Child -> add to stack
@@ -50,9 +55,5 @@ class CollectionModel : ViewModel() {
             }
 
         }
-    }
-
-    companion object {
-        const val TAG = "CollectionModel"
     }
 }

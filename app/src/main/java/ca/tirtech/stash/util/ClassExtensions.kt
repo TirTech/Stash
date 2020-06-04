@@ -1,14 +1,17 @@
-package ca.tirtech.stash.util;
+package ca.tirtech.stash.util
 
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
 import org.json.JSONArray
 import org.json.JSONException
 import java.util.*
 
 fun <T> ArrayList<T>.fromJsonString(list: String): ArrayList<T> = apply {
     try {
-        JSONArray(list).let { (0 until it.length()).forEach { i -> add(it.get(i) as T) } };
+        JSONArray(list).let { (0 until it.length()).forEach { i -> add(it.get(i) as T) } }
     } catch (e: JSONException) {
-        e.printStackTrace();
+        e.printStackTrace()
     }
 }
 
@@ -49,4 +52,8 @@ fun <T> Stack<T>.popTo(predicate: (T) -> Boolean, popMatch: Boolean = false): T?
         popOrNull()
     }
     return if (popMatch) popOrNull() else peekOrNull()
+}
+
+fun <T> LiveData<T>.observe(owner: LifecycleOwner, f: (T) -> Unit) {
+    this.observe(owner, Observer {f(it)})
 }
