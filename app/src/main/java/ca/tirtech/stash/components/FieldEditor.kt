@@ -40,7 +40,7 @@ class FieldEditor(context: Context, attrs: AttributeSet) : ConstraintLayout(cont
                 fieldEntry.setFieldConfig(config)
             }
         }
-        txtFieldName = root.findViewById<TextInputEditText>(R.id.edittxt_field_name)
+        txtFieldName = root.findViewById(R.id.edittxt_field_name)
         spnFieldType = root.findViewById<Spinner>(R.id.spn_field_type).apply {
             setEntries(FieldType.values())
             onItemSelectedListener =
@@ -49,7 +49,7 @@ class FieldEditor(context: Context, attrs: AttributeSet) : ConstraintLayout(cont
                     fieldEntry.refresh()
                 }
         }
-        lblShow = root.findViewById<SwitchMaterial>(R.id.switch_show_label)
+        lblShow = root.findViewById(R.id.switch_show_label)
         btnCancel = root.findViewById<MaterialButton>(R.id.btn_cancel_field_add).apply {
             setOnClickListener {
                 onCancelFunc()

@@ -11,8 +11,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/btn_lst_editor_add"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/spn_multiselect"/>
+            app:layout_constraintTop_toTopOf="parent"/>
     <com.google.android.material.chip.ChipGroup
             android:id="@+id/chpgrp_lst_editor"
             android:layout_width="0dp"

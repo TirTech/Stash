@@ -22,7 +22,7 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun fieldValueDAO(): FieldValueDAO
 
     companion object {
-        private const val RESET = false
+        private var RESET = false
         lateinit var db: AppDatabase
         fun dbinit(context: Context) {
             if (RESET) context.deleteDatabase("stash-database")

@@ -41,14 +41,18 @@ object Repository {
         }
     }
 
-    private fun transactionInCoroutine(f: () -> Unit) {
+    private fun transactionInCoroutine(f: () -> Unit) =
         GlobalScope.launch {
             db.runInTransaction(f)
         }
-    }
 
     fun updateItemWithFields(item: Item, values: List<FieldValue>) = transactionInCoroutine {
         db.itemDAO().updateItem(item)
         values.forEach { db.fieldValueDAO().updateFieldValue(it) }
+    }
+
+    fun updateCategoryWithFieldConfigs(category: Category, configs: List<FieldConfig>) = transactionInCoroutine {
+        db.categoryDAO().updateCategory(category)
+        // TODO update/create the configs and items that use them (use the default value for the new configs)
     }
 }

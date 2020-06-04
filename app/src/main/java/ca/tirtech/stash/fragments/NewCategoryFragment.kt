@@ -13,12 +13,16 @@ import ca.tirtech.stash.R
 import ca.tirtech.stash.components.FieldConfigEditor
 import ca.tirtech.stash.database.AppDatabase.Companion.db
 import ca.tirtech.stash.database.entity.Category
+import ca.tirtech.stash.database.entity.CategoryWithFieldConfigs
 import ca.tirtech.stash.database.repositories.Repository
 import ca.tirtech.stash.util.navigateOnClick
 import ca.tirtech.stash.util.value
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class NewCategoryFragment : Fragment() {
     private lateinit var btnCancel: MaterialButton
@@ -27,6 +31,7 @@ class NewCategoryFragment : Fragment() {
     private lateinit var fieldConfigEditor: FieldConfigEditor
     private lateinit var model: CollectionModel
     private lateinit var navController: NavController
+    private var editingCategory: CategoryWithFieldConfigs? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         model = ViewModelProvider(requireActivity()).get(CollectionModel::class.java)
@@ -37,20 +42,46 @@ class NewCategoryFragment : Fragment() {
             setOnClickListener(this@NewCategoryFragment::handleSaveClicked)
         }
         categoryName = root.findViewById(R.id.edittxt_category_name)
-        fieldConfigEditor = root.findViewById<FieldConfigEditor>(R.id.fieldConfigEditor)
+        fieldConfigEditor = root.findViewById(R.id.fieldConfigEditor)
+
+        val editId = arguments?.getInt(CATEGORY_ID)
+
+        if (editId != null) {
+            CoroutineScope(Dispatchers.Main).launch {
+                db.categoryDAO().getCategoryWithFieldConfigs(editId)?.also {
+                    editingCategory = it
+                    categoryName.setText(it.category.name)
+                    fieldConfigEditor.setConfigs(it.fieldConfigs)
+                }
+            }
+        }
+
         return root
     }
 
     fun handleSaveClicked(view: View) {
         val name = categoryName.value()
         if (name.isNotEmpty()) {
-            Repository.createCategoryWithFields(
-                Category(name, model.currentCategory.value!!.category.id),
-                fieldConfigEditor.getConfigs()
-            )
+            if (editingCategory == null) {
+                Repository.createCategoryWithFields(
+                    Category(name, model.currentCategory.value!!.category.id),
+                    fieldConfigEditor.getConfigs()
+                )
+            } else {
+                editingCategory?.also { ei ->
+                    ei.category.name = name
+                    Repository.updateCategoryWithFieldConfigs(ei.category, fieldConfigEditor.getConfigs()).invokeOnCompletion {
+                        model.refreshCategory()
+                    }
+                }
+            }
             navController.popBackStack()
         } else {
             Snackbar.make(view, R.string.new_category_name_invalid, Snackbar.LENGTH_LONG).show()
         }
+    }
+
+    companion object {
+        const val CATEGORY_ID = "CATEGORY_ID"
     }
 }
