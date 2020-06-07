@@ -1,9 +1,15 @@
 package ca.tirtech.stash.fragments
 
+import android.graphics.BitmapFactory
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.LinearLayout
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
@@ -12,11 +18,10 @@ import ca.tirtech.stash.CollectionModel
 import ca.tirtech.stash.R
 import ca.tirtech.stash.components.FieldEntry
 import ca.tirtech.stash.database.AppDatabase.Companion.db
-import ca.tirtech.stash.database.entity.FieldConfig
-import ca.tirtech.stash.database.entity.FieldValue
-import ca.tirtech.stash.database.entity.Item
-import ca.tirtech.stash.database.entity.ItemWithFieldValuesAndConfigs
+import ca.tirtech.stash.database.entity.*
 import ca.tirtech.stash.database.repositories.Repository
+import ca.tirtech.stash.util.firsts
+import ca.tirtech.stash.util.loadFromFile
 import ca.tirtech.stash.util.navigateOnClick
 import ca.tirtech.stash.util.value
 import com.google.android.material.button.MaterialButton
@@ -25,6 +30,10 @@ import com.google.android.material.textfield.TextInputEditText
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.io.File
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 class NewItemFragment : Fragment() {
     private lateinit var btnCancel: MaterialButton
@@ -36,6 +45,9 @@ class NewItemFragment : Fragment() {
     private var fieldEntries: ArrayList<FieldEntry> = ArrayList()
     private lateinit var entryContainer: ViewGroup
     private var editingItem: ItemWithFieldValuesAndConfigs? = null
+    private lateinit var btnAddImage: MaterialButton
+    private lateinit var photoContainer: LinearLayout
+    private var photos: ArrayList<Pair<ItemPhoto, ImageView>> = ArrayList()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         navController = Navigation.findNavController(container!!)
@@ -43,11 +55,17 @@ class NewItemFragment : Fragment() {
         val root = inflater.inflate(R.layout.fragment_new_item, container, false)
         itemTitle = root.findViewById(R.id.edittxt_item_title)
         itemDescription = root.findViewById(R.id.edittxt_item_description)
-        btnCancel = root.findViewById<MaterialButton>(R.id.btn_cancel_new_item).navigateOnClick(navController)
+        btnCancel = root.findViewById<MaterialButton>(R.id.btn_cancel_new_item).navigateOnClick(navController) {
+            photos.forEach { if (it.first.id == null) File(it.first.fileName).delete() }
+        }
         btnSave = root.findViewById<MaterialButton>(R.id.btn_apply_new_item).apply {
             setOnClickListener(this@NewItemFragment::handleSaveClicked)
         }
         entryContainer = root.findViewById(R.id.editor_container)
+        btnAddImage = root.findViewById<MaterialButton>(R.id.btn_new_item_add_photo).apply {
+            setOnClickListener(this@NewItemFragment::handlePhotoAddClicked)
+        }
+        photoContainer = root.findViewById(R.id.gl_new_item_photo_container)
 
         val editId = arguments?.getInt(ITEM_ID)
 
@@ -61,26 +79,94 @@ class NewItemFragment : Fragment() {
                     itemDescription.setText(it.item.description)
                     it.fieldValues.forEach { fv -> addEditor(fv.fieldConfig, fv.fieldValue) }
                 }
+                db.itemPhotoDAO().getItemPhotoByItemId(editId).forEach {
+                    addPhotoToView(it)
+                }
             }
         }
         return root
     }
 
-    fun handleSaveClicked(view: View) {
+    private fun addPhotoToView(file: String) =  addPhotoToView(ItemPhoto(file))
+
+    private fun addPhotoToView(ip: ItemPhoto) {
+        val iv = ImageView(requireContext())
+        val pair = Pair(ip, iv)
+        iv.loadFromFile(ip.fileName)
+        iv.setPadding(0, 0, 0, resources.getDimensionPixelSize(R.dimen.item_spacing))
+        iv.setOnClickListener {
+            setImageSelected(pair)
+        }
+        photoContainer.addView(iv, ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT))
+        photos.add(pair)
+        if (ip.isCoverImage) addOverlay(iv)
+    }
+
+    private fun setImageSelected(imgPair: Pair<ItemPhoto, ImageView>) {
+        val (ip, iv) = imgPair
+        if (ip.isCoverImage) {
+            ip.isCoverImage = false
+            iv.overlay.clear()
+        } else {
+            // Clear old overlay
+            photos
+                .filter { it.first.isCoverImage }
+                .forEach {
+                    it.first.isCoverImage = false
+                    it.second.overlay.clear()
+                }
+
+            // Set new overlay
+            addOverlay(iv)
+            ip.isCoverImage = true
+        }
+    }
+
+    private fun addOverlay(iv: ImageView) {
+        val overlay = resources.getDrawable(R.drawable.image, requireContext().theme).apply {
+            setTint(resources.getColor(R.color.primaryDarkColor, requireContext().theme))
+        }
+        val overlaySize = photoContainer.width / 6
+        overlay.setBounds(0, 0, overlaySize, overlaySize)
+        iv.overlay.add(overlay)
+    }
+
+    private fun handlePhotoAddClicked(view: View) {
+        val filename = SimpleDateFormat("yyyy_MM_dd_HH_mm_ss").format(Date())
+        val photoFile = File.createTempFile(filename, ".jpg", requireContext().getExternalFilesDir("item_pictures"))
+        val photoContentURI = FileProvider.getUriForFile(requireContext(), requireContext().applicationContext.packageName, photoFile)
+        val activityResLauncher = registerForActivityResult(ActivityResultContracts.TakePicture()) {
+            if (it) {
+                Snackbar.make(view, "Picture Taken: ${photoFile.absolutePath}", Snackbar.LENGTH_SHORT).show()
+                addPhotoToView(photoFile.absolutePath)
+            } else {
+                Snackbar.make(view, "Picture Failed", Snackbar.LENGTH_SHORT).show()
+            }
+        }
+
+        activityResLauncher.launch(photoContentURI)
+    }
+
+    private fun handleSaveClicked(view: View) {
         val title = itemTitle.value()
         val description = itemDescription.value()
         if (title.isNotEmpty()) {
             if (description.isNotEmpty()) {
                 if (editingItem == null) {
-                    Repository.createItemWithFields(
+                    Repository.createItemWithFieldsAndPhotos(
                         Item(model.currentCategory.value!!.category.id, title, description),
-                        fieldEntries.map { it.getValue() }
+                        fieldEntries.map { it.getValue() },
+                        photos.firsts()
                     )
                 } else {
                     editingItem?.also { ei ->
                         ei.item.title = title
                         ei.item.description = description
-                        Repository.updateItemWithFields(ei.item, fieldEntries.map {it.getValue()})
+                        Repository.updateItemWithFieldsAndPhotos(
+                            ei.item,
+                            fieldEntries.map { it.getValue() },
+                            photos.firsts()
+                        )
                     }
                 }
                 navController.popBackStack()
@@ -89,9 +175,9 @@ class NewItemFragment : Fragment() {
     }
 
     private fun addEditor(config: FieldConfig, fieldValue: FieldValue? = null) {
-        val entry = FieldEntry(context!!,null)
-        entryContainer.addView(entry,ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT))
-        entry.setPadding(0,0,0,resources.getDimensionPixelSize(R.dimen.item_spacing))
+        val entry = FieldEntry(context!!, null)
+        entryContainer.addView(entry, ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT))
+        entry.setPadding(0, 0, 0, resources.getDimensionPixelSize(R.dimen.item_spacing))
         entry.setFieldConfig(config, fieldValue)
         fieldEntries.add(entry)
     }

@@ -1,5 +1,6 @@
 package ca.tirtech.stash.fragments
 
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,9 +15,11 @@ import ca.tirtech.stash.R
 import ca.tirtech.stash.components.ChipList
 import ca.tirtech.stash.database.AppDatabase.Companion.db
 import ca.tirtech.stash.database.entity.FieldValueWithConfig
+import ca.tirtech.stash.database.entity.ItemPhoto
 import ca.tirtech.stash.database.entity.ItemWithFieldValuesAndConfigs
 import ca.tirtech.stash.database.types.FieldType
 import ca.tirtech.stash.util.fromJsonString
+import ca.tirtech.stash.util.loadFromFile
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -28,6 +31,7 @@ class ItemDetailFragment : Fragment() {
     private lateinit var detailContainer: LinearLayout
     private lateinit var btnEdit: ImageView
     private lateinit var navController: NavController
+    private lateinit var photoContainer: LinearLayout
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val root = inflater.inflate(R.layout.fragment_item_details, container, false)
@@ -43,26 +47,56 @@ class ItemDetailFragment : Fragment() {
                 navController.navigate(R.id.action_itemDetailFragment_to_newItemFragment, b)
             }
         }
+        photoContainer = root.findViewById(R.id.ll_item_detail_photo_container)
 
         CoroutineScope(Dispatchers.Main).launch {
             db.itemDAO().getItemWithFieldValuesAndConfigs(itemId)?.also {
                 this@ItemDetailFragment.item = it
                 this@ItemDetailFragment.setupDetails()
             }
+            db.itemPhotoDAO().getItemPhotoByItemId(itemId).forEach {
+                addPhotoToView(it)
+            }
         }
         return root
     }
 
-    fun setupDetails() {
+    private fun addPhotoToView(ip: ItemPhoto) {
+        val iv = ImageView(requireContext())
+        iv.loadFromFile(ip.fileName)
+        iv.setPadding(0, 0, 0, resources.getDimensionPixelSize(R.dimen.item_spacing))
+        photoContainer.addView(iv, ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT))
+        if (ip.isCoverImage) addOverlay(iv)
+    }
+
+    private fun addOverlay(iv: ImageView) {
+        val overlay = resources.getDrawable(R.drawable.image, requireContext().theme).apply {
+            setTint(resources.getColor(R.color.primaryDarkColor, requireContext().theme))
+        }
+        val overlaySize = photoContainer.width / 6
+        overlay.setBounds(0, 0, overlaySize, overlaySize)
+        iv.overlay.add(overlay)
+    }
+
+    private fun setupDetails() {
         tvTitle.text = item.item.title
         tvDesc.text = item.item.description
         detailContainer.removeAllViews()
-        for (i in item.fieldValues) {
-            makeKVViewPair(i)
-        }
+        if (item.fieldValues.isEmpty())
+            detailContainer.addView(
+                TextView(context).also {
+                    it.setTextAppearance(R.style.TextAppearance_MaterialComponents_Body1)
+                    it.setText(R.string.no_fields)
+                },
+                LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+            )
+        else
+            item.fieldValues.forEach {
+                makeKVViewPair(it)
+            }
     }
 
-    fun makeKVViewPair(item: FieldValueWithConfig) {
+    private fun makeKVViewPair(item: FieldValueWithConfig) {
         val layout = LinearLayout(context).apply {
             orientation = LinearLayout.HORIZONTAL
         }
@@ -96,7 +130,7 @@ class ItemDetailFragment : Fragment() {
             LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
         )
 
-        layout.setPadding(0,0,0, resources.getDimensionPixelOffset(R.dimen.item_spacing))
+        layout.setPadding(0, 0, 0, resources.getDimensionPixelOffset(R.dimen.item_spacing))
     }
 
     companion object {

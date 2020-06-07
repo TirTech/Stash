@@ -64,4 +64,18 @@
             android:layout_marginStart="@dimen/item_tabbing"
             android:id="@+id/ll_item_detail_fields">
     </LinearLayout>
+    <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/new_item_photos_header"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+            android:layout_marginBottom="@dimen/item_spacing"
+            android:layout_marginTop="@dimen/item_spacing"/>
+    <LinearLayout
+            android:id="@+id/ll_item_detail_photo_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:useDefaultMargins="true">
+    </LinearLayout>
 </LinearLayout>
