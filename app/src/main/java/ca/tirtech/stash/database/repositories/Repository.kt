@@ -1,10 +1,7 @@
 package ca.tirtech.stash.database.repositories
 
 import ca.tirtech.stash.database.AppDatabase.Companion.db
-import ca.tirtech.stash.database.entity.Category
-import ca.tirtech.stash.database.entity.FieldConfig
-import ca.tirtech.stash.database.entity.FieldValue
-import ca.tirtech.stash.database.entity.Item
+import ca.tirtech.stash.database.entity.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -33,11 +30,15 @@ object Repository {
         db.fieldConfigDAO().getAllFieldConfigsForCategoryIds(categoryIds)
     }
 
-    fun createItemWithFields(item: Item, fields: List<FieldValue>) = transactionInCoroutine {
+    fun createItemWithFieldsAndPhotos(item: Item, fields: List<FieldValue>, photos: List<ItemPhoto>) = transactionInCoroutine {
         val iid = db.itemDAO().insertItem(item).toInt()
         fields.forEach {
             it.itemId = iid
             db.fieldValueDAO().insertFieldValue(it)
+        }
+        photos.forEach {
+            it.itemId = iid
+            db.itemPhotoDAO().createItemPhoto(it)
         }
     }
 
@@ -46,9 +47,17 @@ object Repository {
             db.runInTransaction(f)
         }
 
-    fun updateItemWithFields(item: Item, values: List<FieldValue>) = transactionInCoroutine {
+    fun updateItemWithFieldsAndPhotos(item: Item, values: List<FieldValue>, photos: List<ItemPhoto>) = transactionInCoroutine {
         db.itemDAO().updateItem(item)
         values.forEach { db.fieldValueDAO().updateFieldValue(it) }
+        photos.forEach {
+            if (it.id != null) {
+                db.itemPhotoDAO().updateItemPhoto(it)
+            } else {
+                it.itemId = item.id
+                db.itemPhotoDAO().createItemPhoto(it)
+            }
+        }
     }
 
     fun updateCategoryWithFieldConfigs(category: Category, configs: List<FieldConfig>) = transactionInCoroutine {

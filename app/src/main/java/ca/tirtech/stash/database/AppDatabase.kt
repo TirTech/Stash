@@ -5,28 +5,29 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import ca.tirtech.stash.database.dao.CategoryDAO
-import ca.tirtech.stash.database.dao.FieldConfigDAO
-import ca.tirtech.stash.database.dao.FieldValueDAO
-import ca.tirtech.stash.database.dao.ItemDAO
+import ca.tirtech.stash.database.dao.*
 import ca.tirtech.stash.database.entity.*
 import ca.tirtech.stash.database.types.FieldType
 import ca.tirtech.stash.database.types.RoomConverters
 
-@Database(entities = [Category::class, Item::class, FieldConfig::class, FieldValue::class, Project::class], version = 5)
+@Database(entities = [Category::class, Item::class, FieldConfig::class, FieldValue::class, Project::class, ItemPhoto::class], version = 8)
 @TypeConverters(RoomConverters::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun categoryDAO(): CategoryDAO
     abstract fun itemDAO(): ItemDAO
     abstract fun fieldConfigDAO(): FieldConfigDAO
     abstract fun fieldValueDAO(): FieldValueDAO
+    abstract fun itemPhotoDAO(): ItemPhotoDAO
 
     companion object {
         private var RESET = false
         lateinit var db: AppDatabase
         fun dbinit(context: Context) {
             if (RESET) context.deleteDatabase("stash-database")
-            db = Room.databaseBuilder(context, AppDatabase::class.java, "stash-database").allowMainThreadQueries().build().apply {
+            db = Room.databaseBuilder(context, AppDatabase::class.java, "stash-database")
+                .allowMainThreadQueries()
+                .fallbackToDestructiveMigration()
+                .build().apply {
                 if (RESET) {
                     categoryDAO().insertCategory(Category("Root Category", null))
                     val id = categoryDAO().getRootCategory()!!.category.id

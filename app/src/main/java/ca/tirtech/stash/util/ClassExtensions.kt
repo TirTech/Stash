@@ -57,3 +57,34 @@ fun <T> Stack<T>.popTo(predicate: (T) -> Boolean, popMatch: Boolean = false): T?
 fun <T> LiveData<T>.observe(owner: LifecycleOwner, f: (T) -> Unit) {
     this.observe(owner, Observer {f(it)})
 }
+
+
+/**
+ * Find the first element that matches `predicate` and return it's index or -1 if not found.
+ *
+ * @param T
+ * @param predicate
+ * @return
+ */
+inline fun <T> Iterable<T>.findIndex(predicate: (T) -> Boolean): Int {
+    for ((index, element) in this.withIndex()) if (predicate(element)) return index
+    return -1
+}
+
+/**
+ * Return the first value of each pair as a list.
+ *
+ * @return list of first values
+ */
+fun <A,B,T: Pair<A,B>> Iterable<T>.firsts(): List<A>{
+    return this.map { it.first }
+}
+
+/**
+ * Return the second value of each pair as a list.
+ *
+ * @return list of second values
+ */
+fun <A,B,T: Pair<A,B>> Iterable<T>.seconds(): List<B>{
+    return this.map { it.second }
+}
