@@ -1,11 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="stash-database" uuid="f1bd0daf-b5ea-44cf-a016-adaedc9bca25">
+    <data-source source="LOCAL" name="Stash Database On Samsung" uuid="6fc5e5d9-4274-4da8-938b-00fd8e2ec16e">
+      <driver-ref>sqlite.xerial</driver-ref>
+      <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
+      <jdbc-url>jdbc:sqlite:C:\Users\Brandon\AppData\Local\JetBrains\IntelliJIdea2020.1\android\databases\SERIAL_NUMBER_RF8M309JYDL\ca.tirtech.stash\internal\stash-database</jdbc-url>
+    </data-source>
+    <data-source source="LOCAL" name="Android SQLite" uuid="6eaee038-61be-4d5c-a4b0-e032eb7800af">
+      <driver-ref>sqlite.xerial</driver-ref>
+      <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
+      <jdbc-url>jdbc:sqlite:C:\Users\Brandon\AppData\Local\JetBrains\IntelliJIdea2020.1\android\databases\SERIAL_NUMBER_RF8M309JYDL\ca.tirtech.stash\internal\stash-database</jdbc-url>
+    </data-source>
+    <data-source source="LOCAL" name="stash-database" uuid="81466616-df76-4eef-8db2-a5b47f60aca2">
       <driver-ref>sqlite.xerial</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
-      <jdbc-url>jdbc:sqlite:D:\Projects\Stash\app\src\main\assets\databases\stash-database.db</jdbc-url>
+      <jdbc-url>jdbc:sqlite:D:\Projects\Stash\app\src\main\assets\databases\stash-v8.db</jdbc-url>
       <libraries>
         <library>
           <url>file://$APPLICATION_CONFIG_DIR$/jdbc-drivers/Xerial SQLiteJDBC/3.25.1/license.txt</url>

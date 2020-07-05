@@ -33,10 +33,11 @@ class CollectionFragment : Fragment() {
             addTab(newTab().setText(R.string.tab_text_category).also { tabCategories = it })
             addTab(newTab().setText(R.string.tab_text_items).also { tabItems = it })
             addOnTabSelectedListener(object : OnTabSelectedListener {
-                override fun onTabSelected(tab: TabLayout.Tab) = when (tab) {
-                    tabCategories -> navController.navigate(R.id.action_itemsFragment_to_categoriesFragment)
-                    tabItems -> navController.navigate(R.id.action_categoriesFragment_to_itemsFragment)
-                    else -> Unit
+                override fun onTabSelected(tab: TabLayout.Tab) {
+                    when (tab) {
+                        tabCategories -> if (navController.currentDestination?.id != R.id.categoriesFragment) navController.navigate(R.id.action_itemsFragment_to_categoriesFragment)
+                        tabItems -> if (navController.currentDestination?.id != R.id.itemsFragment) navController.navigate(R.id.action_categoriesFragment_to_itemsFragment)
+                    }
                 }
 
                 override fun onTabUnselected(tab: TabLayout.Tab) {}
