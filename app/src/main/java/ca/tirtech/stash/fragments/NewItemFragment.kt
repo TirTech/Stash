@@ -1,7 +1,5 @@
 package ca.tirtech.stash.fragments
 
-import android.graphics.BitmapFactory
-import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -20,10 +18,7 @@ import ca.tirtech.stash.components.FieldEntry
 import ca.tirtech.stash.database.AppDatabase.Companion.db
 import ca.tirtech.stash.database.entity.*
 import ca.tirtech.stash.database.repositories.Repository
-import ca.tirtech.stash.util.firsts
-import ca.tirtech.stash.util.loadFromFile
-import ca.tirtech.stash.util.navigateOnClick
-import ca.tirtech.stash.util.value
+import ca.tirtech.stash.util.*
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
@@ -40,8 +35,8 @@ class NewItemFragment : Fragment() {
     private lateinit var btnSave: MaterialButton
     private lateinit var model: CollectionModel
     private lateinit var navController: NavController
-    private lateinit var itemTitle: TextInputEditText
-    private lateinit var itemDescription: TextInputEditText
+    private lateinit var txtItemTitle: TextInputEditText
+    private lateinit var txtItemDescription: TextInputEditText
     private var fieldEntries: ArrayList<FieldEntry> = ArrayList()
     private lateinit var entryContainer: ViewGroup
     private var editingItem: ItemWithFieldValuesAndConfigs? = null
@@ -53,8 +48,12 @@ class NewItemFragment : Fragment() {
         navController = Navigation.findNavController(container!!)
         model = ViewModelProvider(requireActivity()).get(CollectionModel::class.java)
         val root = inflater.inflate(R.layout.fragment_new_item, container, false)
-        itemTitle = root.findViewById(R.id.edittxt_item_title)
-        itemDescription = root.findViewById(R.id.edittxt_item_description)
+        txtItemTitle = root.findViewById<TextInputEditText>(R.id.edittxt_item_title).apply {
+            autoHideKeyboard()
+        }
+        txtItemDescription = root.findViewById<TextInputEditText>(R.id.edittxt_item_description).apply {
+            autoHideKeyboard()
+        }
         btnCancel = root.findViewById<MaterialButton>(R.id.btn_cancel_new_item).navigateOnClick(navController) {
             photos.forEach { if (it.first.id == null) File(it.first.fileName).delete() }
         }
@@ -75,8 +74,8 @@ class NewItemFragment : Fragment() {
             } else {
                 db.itemDAO().getItemWithFieldValuesAndConfigs(editId)?.also {
                     this@NewItemFragment.editingItem = it
-                    itemTitle.setText(it.item.title)
-                    itemDescription.setText(it.item.description)
+                    txtItemTitle.setText(it.item.title)
+                    txtItemDescription.setText(it.item.description)
                     it.fieldValues.forEach { fv -> addEditor(fv.fieldConfig, fv.fieldValue) }
                 }
                 db.itemPhotoDAO().getItemPhotoByItemId(editId).forEach {
@@ -148,8 +147,8 @@ class NewItemFragment : Fragment() {
     }
 
     private fun handleSaveClicked(view: View) {
-        val title = itemTitle.value()
-        val description = itemDescription.value()
+        val title = txtItemTitle.value()
+        val description = txtItemDescription.value()
         if (title.isNotEmpty()) {
             if (description.isNotEmpty()) {
                 if (editingItem == null) {

@@ -10,6 +10,7 @@ import ca.tirtech.stash.R
 import ca.tirtech.stash.database.entity.FieldConfig
 import ca.tirtech.stash.database.types.FieldType
 import ca.tirtech.stash.util.OnSelectedItemListenerImpl
+import ca.tirtech.stash.util.autoHideKeyboard
 import ca.tirtech.stash.util.setEntries
 import ca.tirtech.stash.util.value
 import com.google.android.material.button.MaterialButton
@@ -40,7 +41,9 @@ class FieldEditor(context: Context, attrs: AttributeSet) : ConstraintLayout(cont
                 fieldEntry.setFieldConfig(config)
             }
         }
-        txtFieldName = root.findViewById(R.id.edittxt_field_name)
+        txtFieldName = root.findViewById<TextInputEditText>(R.id.edittxt_field_name).apply {
+            autoHideKeyboard()
+        }
         spnFieldType = root.findViewById<Spinner>(R.id.spn_field_type).apply {
             setEntries(FieldType.values())
             onItemSelectedListener =

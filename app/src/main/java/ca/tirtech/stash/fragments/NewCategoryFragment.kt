@@ -15,6 +15,7 @@ import ca.tirtech.stash.database.AppDatabase.Companion.db
 import ca.tirtech.stash.database.entity.Category
 import ca.tirtech.stash.database.entity.CategoryWithFieldConfigs
 import ca.tirtech.stash.database.repositories.Repository
+import ca.tirtech.stash.util.autoHideKeyboard
 import ca.tirtech.stash.util.navigateOnClick
 import ca.tirtech.stash.util.value
 import com.google.android.material.button.MaterialButton
@@ -27,7 +28,7 @@ import kotlinx.coroutines.launch
 class NewCategoryFragment : Fragment() {
     private lateinit var btnCancel: MaterialButton
     private lateinit var btnSave: MaterialButton
-    private lateinit var categoryName: TextInputEditText
+    private lateinit var txtCategoryName: TextInputEditText
     private lateinit var fieldConfigEditor: FieldConfigEditor
     private lateinit var model: CollectionModel
     private lateinit var navController: NavController
@@ -41,7 +42,9 @@ class NewCategoryFragment : Fragment() {
         btnSave = root.findViewById<MaterialButton>(R.id.btn_apply_new_category).apply {
             setOnClickListener(this@NewCategoryFragment::handleSaveClicked)
         }
-        categoryName = root.findViewById(R.id.edittxt_category_name)
+        txtCategoryName = root.findViewById<TextInputEditText>(R.id.edittxt_category_name).apply {
+            autoHideKeyboard()
+        }
         fieldConfigEditor = root.findViewById(R.id.fieldConfigEditor)
 
         val editId = arguments?.getInt(CATEGORY_ID)
@@ -50,7 +53,7 @@ class NewCategoryFragment : Fragment() {
             CoroutineScope(Dispatchers.Main).launch {
                 db.categoryDAO().getCategoryWithFieldConfigs(editId)?.also {
                     editingCategory = it
-                    categoryName.setText(it.category.name)
+                    txtCategoryName.setText(it.category.name)
                     fieldConfigEditor.setConfigs(it.fieldConfigs)
                 }
             }
@@ -60,7 +63,7 @@ class NewCategoryFragment : Fragment() {
     }
 
     fun handleSaveClicked(view: View) {
-        val name = categoryName.value()
+        val name = txtCategoryName.value()
         if (name.isNotEmpty()) {
             if (editingCategory == null) {
                 Repository.createCategoryWithFields(

@@ -17,7 +17,7 @@ import com.google.android.material.textfield.TextInputLayout
 class FieldEntry(context: Context, attrs: AttributeSet?) : ConstraintLayout(context, attrs) {
 
     private val switchValue: SwitchMaterial
-    private val textValue: TextInputEditText
+    private val txtValue: TextInputEditText
     private val numValue: TextInputEditText
     private val spnSingle: Spinner
     private val msMulti: MultiSelect
@@ -30,9 +30,13 @@ class FieldEntry(context: Context, attrs: AttributeSet?) : ConstraintLayout(cont
     init {
         val root = View.inflate(context, R.layout.custom_field_entry, this)
         switchValue = root.findViewById(R.id.switch_field_value)
-        textValue = root.findViewById(R.id.edittxt_field_value)
+        txtValue = root.findViewById<TextInputEditText>(R.id.edittxt_field_value).apply {
+            autoHideKeyboard()
+        }
         textValueLayout = root.findViewById(R.id.txtlayout_field_value)
-        numValue = root.findViewById(R.id.editNum_field_value)
+        numValue = root.findViewById<TextInputEditText>(R.id.editNum_field_value).apply {
+            autoHideKeyboard()
+        }
         numValueLayout = root.findViewById(R.id.numlayout_field_value)
         spnSingle = root.findViewById(R.id.spn_field_value)
         msMulti = root.findViewById(R.id.ms_field_value)
@@ -84,7 +88,7 @@ class FieldEntry(context: Context, attrs: AttributeSet?) : ConstraintLayout(cont
 
     fun getValue(): FieldValue = editingValue.apply {
         value = when (config.type) {
-            FieldType.STRING -> textValue.value()
+            FieldType.STRING -> txtValue.value()
             FieldType.NUMBER -> numValue.value()
             FieldType.BOOLEAN -> switchValue.isChecked.toString()
             FieldType.SINGLE_CHOICE -> spnSingle.selectedItem.toString()

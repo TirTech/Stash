@@ -4,6 +4,8 @@ import android.content.Context
 import android.util.AttributeSet
 import androidx.constraintlayout.widget.ConstraintLayout
 import ca.tirtech.stash.R
+import ca.tirtech.stash.util.autoHideKeyboard
+import ca.tirtech.stash.util.clear
 import ca.tirtech.stash.util.value
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.chip.Chip
@@ -21,7 +23,9 @@ class ListBuilder(context: Context?, attrs: AttributeSet?) : ConstraintLayout(co
 
     init {
         val root = inflate(context, R.layout.custom_list_editor, this)
-        txtValue = root.findViewById(R.id.txt_lst_edit_value)
+        txtValue = root.findViewById<TextInputEditText>(R.id.txt_lst_edit_value).apply {
+            autoHideKeyboard()
+        }
         btnAdd = root.findViewById(R.id.btn_lst_editor_add)
         chipGroup = root.findViewById(R.id.chpgrp_lst_editor)
         btnAdd.setOnClickListener { addChip() }
@@ -31,6 +35,7 @@ class ListBuilder(context: Context?, attrs: AttributeSet?) : ConstraintLayout(co
 
     private fun addChip() = Chip(context).also { chip ->
         val data = txtValue.value()
+        txtValue.clear()
         chip.text = data
         chip.isCloseIconVisible = true
         chip.setOnCloseIconClickListener {

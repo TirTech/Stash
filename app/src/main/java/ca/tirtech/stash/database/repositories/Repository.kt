@@ -62,6 +62,14 @@ object Repository {
 
     fun updateCategoryWithFieldConfigs(category: Category, configs: List<FieldConfig>) = transactionInCoroutine {
         db.categoryDAO().updateCategory(category)
-        // TODO update/create the configs and items that use them (use the default value for the new configs)
+        configs.forEach {
+            it.categoryId = category.id
+            if (it.id > 0) {
+                db.fieldConfigDAO().updateFieldConfig(it)
+            } else {
+                db.fieldConfigDAO().insertFieldConfig(it)
+            }
+        }
+        // TODO update items that use new configs (use the default value for the new configs)
     }
 }

@@ -5,7 +5,9 @@
         android:layout_height="match_parent"
         android:layout_width="match_parent"
         android:paddingVertical="@dimen/activity_vertical_margin"
-        android:paddingHorizontal="@dimen/activity_horizontal_margin">
+        android:paddingHorizontal="@dimen/activity_horizontal_margin"
+        android:clickable="true"
+        android:focusableInTouchMode="true">
     <com.google.android.material.button.MaterialButton
             android:text="@string/add_category"
             android:layout_width="0dp"

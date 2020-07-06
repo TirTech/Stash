@@ -9,7 +9,9 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:paddingVertical="@dimen/activity_vertical_margin"
-        android:paddingHorizontal="@dimen/activity_horizontal_margin">
+        android:paddingHorizontal="@dimen/activity_horizontal_margin"
+        android:clickable="true"
+        android:focusableInTouchMode="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"

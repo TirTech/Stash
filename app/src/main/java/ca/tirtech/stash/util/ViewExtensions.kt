@@ -26,6 +26,14 @@ fun EditText.value(): String {
     return this.text.toString()
 }
 
+/**
+ * Clear the value of this text field
+ *
+ */
+fun EditText.clear() {
+    this.text.clear()
+}
+
 fun Spinner.getEntries(): List<*> = adapter.run {
     if (this is ArrayAdapter<*>) this.getEntries() else ArrayList<Any>()
 }
