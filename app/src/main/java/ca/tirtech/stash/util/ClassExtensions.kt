@@ -9,9 +9,12 @@ import androidx.core.content.ContextCompat.getSystemService
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
+import kotlinx.coroutines.*
 import org.json.JSONArray
 import org.json.JSONException
 import java.util.*
+import kotlin.coroutines.CoroutineContext
+import kotlin.coroutines.EmptyCoroutineContext
 
 
 fun <T> ArrayList<T>.fromJsonString(list: String): ArrayList<T> = apply {
@@ -104,4 +107,17 @@ fun EditText.autoHideKeyboard() {
     setOnFocusChangeListener { _, hasFocus ->
         if (!hasFocus) getSystemService(this.context, InputMethodManager::class.java)?.hideSoftInputFromWindow(this.windowToken, 0)
     }
+}
+
+fun CoroutineScope.launchIdling(
+    context: CoroutineContext = EmptyCoroutineContext,
+    start: CoroutineStart = CoroutineStart.DEFAULT,
+    block: suspend CoroutineScope.() -> Unit
+): Job {
+    EspressoCoroutineIdlingResource.increment()
+    val job = this.launch(context, start, block)
+    job.invokeOnCompletion {
+        EspressoCoroutineIdlingResource.decrement()
+    }
+    return job
 }

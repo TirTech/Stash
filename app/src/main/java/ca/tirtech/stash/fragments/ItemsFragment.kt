@@ -16,9 +16,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import ca.tirtech.stash.CollectionModel
 import ca.tirtech.stash.R
+import ca.tirtech.stash.components.ChipList
 import ca.tirtech.stash.database.AppDatabase.Companion.db
-import ca.tirtech.stash.database.entity.Item
-import ca.tirtech.stash.database.entity.ItemPhoto
+import ca.tirtech.stash.database.entity.*
 import ca.tirtech.stash.fragments.ItemsFragment.ItemAdapter.ItemViewHolder
 import ca.tirtech.stash.util.*
 import com.google.android.material.button.MaterialButton
@@ -55,12 +55,18 @@ class ItemsFragment : Fragment() {
     }
 
     inner class ItemAdapter : RecyclerView.Adapter<ItemViewHolder>() {
-        private val items: ArrayList<Pair<Item,ItemPhoto?>> = ArrayList()
+        private val items: ArrayList<Pair<ItemWithFieldValuesAndConfigs, ItemPhoto?>> = ArrayList()
 
         inner class ItemViewHolder(val root: MaterialCardView) : RecyclerView.ViewHolder(root) {
             val title: TextView = root.findViewById(R.id.txt_item_title)
             val description: TextView = root.findViewById(R.id.txt_item_description)
             val image: ImageView = root.findViewById(R.id.img_item_photo)
+            val chpgrpLabels: ChipList<FieldValueWithConfig> = root.findViewById<ChipList<FieldValueWithConfig>>(R.id.chpgrp_item_labels).apply {
+                chipBuilder = {fv, c ->
+                    c.text = "${fv.fieldConfig.name}: ${fv.fieldValue.value}"
+                    c.closeIcon = null
+                }
+            }
         }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder = ItemViewHolder(
@@ -70,28 +76,39 @@ class ItemsFragment : Fragment() {
         override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
             val data = items[position]
             holder.apply {
-                title.text = data.first.title
-                description.text = data.first.description
+                title.text = data.first.item.title
+                description.text = data.first.item.description
+                chpgrpLabels.addAllItems(data.first.fieldValues.filter { it.fieldConfig.showAsLabel })
                 root.setOnClickListener {
                     val b = Bundle()
-                    b.putInt(ItemDetailFragment.ITEM_ID, data.first.id)
+                    b.putInt(ItemDetailFragment.ITEM_ID, data.first.item.id)
                     navController.navigate(R.id.action_itemsFragment_to_itemDetailFragment, b)
                 }
-                data.second?.apply{ image.loadFromFile(fileName) }
+                data.second?.apply { image.loadFromFile(fileName) }
             }
         }
 
         override fun getItemCount(): Int = items.size
 
         init {
-            model.items.observe(viewLifecycleOwner) {catItems ->
+            model.items.observe(viewLifecycleOwner) { catItems ->
                 refreshItems(catItems)
             }
         }
 
         private fun refreshItems(catItems: List<Item>) = lifecycleScope.launch {
             items.clear()
-            items.addAll(catItems.map { Pair(it, db.itemPhotoDAO().getItemCoverPhotoByItemId(it.id)) })
+            items.addAll(
+                catItems
+                    .map {
+                        Pair(
+                            db.itemDAO().getItemWithFieldValuesAndConfigs(it.id),
+                            db.itemPhotoDAO().getItemCoverPhotoByItemId(it.id)
+                        )
+                    }
+                    .filter { it.first != null }
+                        as List<Pair<ItemWithFieldValuesAndConfigs, ItemPhoto?>>
+            )
         }.invokeOnCompletion {
             notifyDataSetChanged()
         }

@@ -1,17 +1,34 @@
 package ca.tirtech
 
+import android.app.Application
+import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.rule.ActivityTestRule
+import ca.tirtech.stash.MainActivity
 import ca.tirtech.stash.R
+import ca.tirtech.stash.database.AppDatabase
 import ca.tirtech.stash.database.AppDatabase.Companion.db
 import ca.tirtech.stash.database.entity.Category
 import org.junit.Assert.assertNull
+import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
-class MetaTest: BaseTest() {
+@RunWith(AndroidJUnit4::class)
+class MetaTest {
+
+    @get:Rule
+    val activityRule = CustomActivityTestRule(MainActivity::class.java)
+
+    @Before
+    fun setup() {
+        ApplicationProvider.getApplicationContext<Application>().deleteDatabase("stash.db")
+        AppDatabase.dbinit(ApplicationProvider.getApplicationContext())
+    }
 
     val catName = "Test Cat"
 

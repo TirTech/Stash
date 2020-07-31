@@ -86,7 +86,7 @@ class NewItemFragment : Fragment() {
         return root
     }
 
-    private fun addPhotoToView(file: String) =  addPhotoToView(ItemPhoto(file))
+    private fun addPhotoToView(file: String) = addPhotoToView(ItemPhoto(file))
 
     private fun addPhotoToView(ip: ItemPhoto) {
         val iv = ImageView(requireContext())
@@ -156,7 +156,9 @@ class NewItemFragment : Fragment() {
                         Item(model.currentCategory.value!!.category.id, title, description),
                         fieldEntries.map { it.getValue() },
                         photos.firsts()
-                    )
+                    ).invokeOnCompletion {
+                        model.refreshCategory()
+                    }
                 } else {
                     editingItem?.also { ei ->
                         ei.item.title = title
@@ -165,7 +167,9 @@ class NewItemFragment : Fragment() {
                             ei.item,
                             fieldEntries.map { it.getValue() },
                             photos.firsts()
-                        )
+                        ).invokeOnCompletion {
+                            model.refreshCategory()
+                        }
                     }
                 }
                 navController.popBackStack()

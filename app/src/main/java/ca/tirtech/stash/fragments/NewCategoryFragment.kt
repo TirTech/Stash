@@ -69,7 +69,9 @@ class NewCategoryFragment : Fragment() {
                 Repository.createCategoryWithFields(
                     Category(name, model.currentCategory.value!!.category.id),
                     fieldConfigEditor.getConfigs()
-                )
+                ).invokeOnCompletion {
+                    model.refreshCategory()
+                }
             } else {
                 editingCategory?.also { ei ->
                     ei.category.name = name

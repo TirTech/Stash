@@ -30,7 +30,9 @@ class CollectionFragment : Fragment() {
         })
         binding = FragmentCollectionBinding.inflate(inflater, container, false)
         binding.tabs.apply {
-            addTab(newTab().setText(R.string.tab_text_category).also { tabCategories = it })
+            addTab(newTab().setText(R.string.tab_text_category).also {
+                tabCategories = it
+            })
             addTab(newTab().setText(R.string.tab_text_items).also { tabItems = it })
             addOnTabSelectedListener(object : OnTabSelectedListener {
                 override fun onTabSelected(tab: TabLayout.Tab) {

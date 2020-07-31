@@ -1,7 +1,9 @@
 package ca.tirtech.stash.database.repositories
 
+import android.app.Application
 import ca.tirtech.stash.database.AppDatabase.Companion.db
 import ca.tirtech.stash.database.entity.*
+import ca.tirtech.stash.util.launchIdling
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -43,7 +45,7 @@ object Repository {
     }
 
     private fun transactionInCoroutine(f: () -> Unit) =
-        GlobalScope.launch {
+        GlobalScope.launchIdling {
             db.runInTransaction(f)
         }
 

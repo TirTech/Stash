@@ -2,30 +2,36 @@
 <com.google.android.material.card.MaterialCardView
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:contentPadding="10dp"
+        app:contentPadding="8dp"
         app:cardCornerRadius="2dp">
     <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingBottom="5dp">
+            android:layout_height="wrap_content">
         <ImageView
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="0dp"
                 app:srcCompat="@android:drawable/ic_menu_camera"
                 android:id="@+id/img_item_photo"
+                android:scaleType="centerInside"
+                app:layout_constraintDimensionRatio="1"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@id/cl_item_card"
                 app:layout_constraintBottom_toBottomOf="@id/cl_item_card"
-                android:scaleType="centerInside"/>
+                app:layout_constraintTop_toTopOf="@id/cl_item_card"
+                app:layout_constraintStart_toEndOf="@id/cl_item_card"
+                android:layout_marginStart="@dimen/item_spacing"
+                android:adjustViewBounds="true"
+                android:cropToPadding="true"/>
         <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                android:id="@+id/cl_item_card">
+                android:id="@+id/cl_item_card"
+                app:layout_constraintEnd_toEndOf="parent">
 
             <TextView
                     android:layout_width="wrap_content"
@@ -41,15 +47,17 @@
                     app:layout_constraintTop_toBottomOf="@id/txt_item_title"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintBottom_toTopOf="@id/chpgrp_item_labels"
-                    android:textAppearance="?attr/textAppearanceBody2"/>
-            <com.google.android.material.chip.ChipGroup
-                    android:layout_width="0dp"
+                    android:textAppearance="?attr/textAppearanceBody2"
+                    android:layout_marginTop="@dimen/item_spacing"
+                    android:layout_marginBottom="@dimen/item_spacing"/>
+            <ca.tirtech.stash.components.ChipList
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     android:id="@+id/chpgrp_item_labels">
 
-            </com.google.android.material.chip.ChipGroup>
+            </ca.tirtech.stash.components.ChipList>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>
