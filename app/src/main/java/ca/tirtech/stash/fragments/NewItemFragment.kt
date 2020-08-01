@@ -90,7 +90,7 @@ class NewItemFragment : Fragment() {
 
     private fun addPhotoToView(ip: ItemPhoto) {
         val iv = ImageView(requireContext())
-        val pair = Pair(ip, iv)
+        val pair = ip to iv
         iv.loadFromFile(ip.fileName)
         iv.setPadding(0, 0, 0, resources.getDimensionPixelSize(R.dimen.item_spacing))
         iv.setOnClickListener {

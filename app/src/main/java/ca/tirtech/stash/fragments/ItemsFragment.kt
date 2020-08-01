@@ -18,7 +18,10 @@ import ca.tirtech.stash.CollectionModel
 import ca.tirtech.stash.R
 import ca.tirtech.stash.components.ChipList
 import ca.tirtech.stash.database.AppDatabase.Companion.db
-import ca.tirtech.stash.database.entity.*
+import ca.tirtech.stash.database.entity.FieldValueWithConfig
+import ca.tirtech.stash.database.entity.Item
+import ca.tirtech.stash.database.entity.ItemPhoto
+import ca.tirtech.stash.database.entity.ItemWithFieldValuesAndConfigs
 import ca.tirtech.stash.fragments.ItemsFragment.ItemAdapter.ItemViewHolder
 import ca.tirtech.stash.util.*
 import com.google.android.material.button.MaterialButton
@@ -62,7 +65,7 @@ class ItemsFragment : Fragment() {
             val description: TextView = root.findViewById(R.id.txt_item_description)
             val image: ImageView = root.findViewById(R.id.img_item_photo)
             val chpgrpLabels: ChipList<FieldValueWithConfig> = root.findViewById<ChipList<FieldValueWithConfig>>(R.id.chpgrp_item_labels).apply {
-                chipBuilder = {fv, c ->
+                chipBuilder = { fv, c ->
                     c.text = "${fv.fieldConfig.name}: ${fv.fieldValue.value}"
                     c.closeIcon = null
                 }
@@ -101,10 +104,7 @@ class ItemsFragment : Fragment() {
             items.addAll(
                 catItems
                     .map {
-                        Pair(
-                            db.itemDAO().getItemWithFieldValuesAndConfigs(it.id),
-                            db.itemPhotoDAO().getItemCoverPhotoByItemId(it.id)
-                        )
+                        db.itemDAO().getItemWithFieldValuesAndConfigs(it.id) to db.itemPhotoDAO().getItemCoverPhotoByItemId(it.id)
                     }
                     .filter { it.first != null }
                         as List<Pair<ItemWithFieldValuesAndConfigs, ItemPhoto?>>

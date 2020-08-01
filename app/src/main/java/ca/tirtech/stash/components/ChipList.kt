@@ -6,8 +6,8 @@ import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 
 class ChipList<T : Any>(context: Context?, attrs: AttributeSet?) : ChipGroup(context, attrs) {
-    constructor(context: Context?): this(context, null)
-    
+    constructor(context: Context?) : this(context, null)
+
     private var items: ArrayList<T> = ArrayList()
     private var chips: ArrayList<Pair<Chip, T>> = ArrayList()
     var chipBuilder: (T, Chip) -> Unit = { i, c ->
@@ -44,13 +44,10 @@ class ChipList<T : Any>(context: Context?, attrs: AttributeSet?) : ChipGroup(con
             chips.any { p -> p.second == i }
         }.forEach {
             chips.add(
-                Pair(
-                    Chip(context).also { c ->
-                        chipBuilder(it, c)
-                        this.addView(c)
-                    },
-                    it
-                )
+                Chip(context).also { c ->
+                    chipBuilder(it, c)
+                    this.addView(c)
+                } to it
             )
         }
 

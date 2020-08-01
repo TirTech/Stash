@@ -11,6 +11,7 @@ import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
 import ca.tirtech.TestInteractions.createBasicCategory
+import ca.tirtech.TestInteractions.createCategoryWithSingleSelectConfig
 import ca.tirtech.TestInteractions.createCategoryWithStringConfig
 import ca.tirtech.stash.MainActivity
 import ca.tirtech.stash.R
@@ -65,11 +66,22 @@ class CategoryTest {
     }
 
     @Test
-    fun createCategoryWithFieldConfig() {
+    fun createCategoryWithStringFieldConfig() {
         val newCategoryName = randString(10)
         val fieldName = randString(5)
         val fieldDefault = randString(5)
         createCategoryWithStringConfig(newCategoryName, fieldName, fieldDefault)
+        onView(allOf(hasSibling(withText(newCategoryName)), instanceOf(ImageView::class.java))).perform(click())
+        onView(withText(fieldName)).check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun createCategoryWithSingleSelectFieldConfig() {
+        val newCategoryName = randString(10)
+        val fieldName = randString(5)
+        val options = (1..5).map { randString(4) }
+        val default = nextInt(1,options.size-1)
+        createCategoryWithSingleSelectConfig(newCategoryName, fieldName, options, default)
         onView(allOf(hasSibling(withText(newCategoryName)), instanceOf(ImageView::class.java))).perform(click())
         onView(withText(fieldName)).check(matches(isDisplayed()))
     }
