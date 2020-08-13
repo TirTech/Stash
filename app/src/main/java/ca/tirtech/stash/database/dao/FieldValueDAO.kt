@@ -9,14 +9,14 @@ import ca.tirtech.stash.database.entity.FieldValue
 @Dao
 interface FieldValueDAO {
     @Insert
-    fun insertFieldValue(value: FieldValue?): Long
+    suspend fun insertFieldValue(value: FieldValue?): Long
 
     @Update
-    fun updateFieldValue(value: FieldValue?)
+    suspend fun updateFieldValue(value: FieldValue?)
 
     @Query("SELECT * FROM FieldValue")
-    fun getAllFieldValues(): List<FieldValue?>?
+    suspend fun getAllFieldValues(): List<FieldValue?>?
 
     @Query("SELECT * FROM FieldValue WHERE itemId == :id")
-    fun getFieldValuesForItemId(id: Int): List<FieldValue?>?
+    suspend fun getFieldValuesForItemId(id: Int): List<FieldValue?>?
 }

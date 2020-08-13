@@ -3,7 +3,6 @@ package ca.tirtech.stash.components
 import android.content.Context
 import android.util.AttributeSet
 import android.view.View
-import android.widget.Spinner
 import androidx.constraintlayout.widget.ConstraintLayout
 import ca.tirtech.stash.R
 import ca.tirtech.stash.database.entity.FieldConfig
@@ -19,7 +18,7 @@ class FieldEntry(context: Context, attrs: AttributeSet?) : ConstraintLayout(cont
     private val switchValue: SwitchMaterial
     private val txtValue: TextInputEditText
     private val numValue: TextInputEditText
-    private val spnSingle: Spinner
+    private val spnSingle: MaterialSpinner
     private val msMulti: MultiSelect
     private var config: FieldConfig = FieldConfig("Dummy", FieldType.MULTI_CHOICE, null, false, "", arrayListOf("Test Z", "Test Y", "Test X"))
     private val textValueLayout: TextInputLayout
@@ -66,7 +65,7 @@ class FieldEntry(context: Context, attrs: AttributeSet?) : ConstraintLayout(cont
                 isChecked = editingValue.value.toBoolean()
             }
             FieldType.SINGLE_CHOICE -> spnSingle.apply {
-                setEntries(config.choices)
+                entries = config.choices
                 setVisibility(true)
                 setSelection(config.choices.indexOf(editingValue.value))
             }
@@ -91,7 +90,7 @@ class FieldEntry(context: Context, attrs: AttributeSet?) : ConstraintLayout(cont
             FieldType.STRING -> txtValue.value()
             FieldType.NUMBER -> numValue.value()
             FieldType.BOOLEAN -> switchValue.isChecked.toString()
-            FieldType.SINGLE_CHOICE -> spnSingle.selectedItem.toString()
+            FieldType.SINGLE_CHOICE -> spnSingle.selectedItem
             FieldType.MULTI_CHOICE -> msMulti.getValues().toJsonString()
         }
     }

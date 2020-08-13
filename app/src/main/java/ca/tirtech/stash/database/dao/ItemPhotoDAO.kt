@@ -7,20 +7,20 @@ import ca.tirtech.stash.database.entity.ItemPhoto
 interface ItemPhotoDAO {
 
     @Update
-    fun updateItemPhoto(itemPhoto: ItemPhoto)
+    suspend fun updateItemPhoto(itemPhoto: ItemPhoto)
 
     @Insert
-    fun createItemPhoto(itemPhoto: ItemPhoto): Long
+    suspend fun createItemPhoto(itemPhoto: ItemPhoto): Long
 
     @Transaction
     @Query("SELECT * FROM ItemPhoto WHERE id==:id")
-    fun getItemPhotoById(id: Int): ItemPhoto
+    suspend fun getItemPhotoById(id: Int): ItemPhoto
 
     @Transaction
     @Query("SELECT * FROM ItemPhoto WHERE itemId==:id")
-    fun getItemPhotoByItemId(id: Int): List<ItemPhoto>
+    suspend fun getItemPhotoByItemId(id: Int): List<ItemPhoto>
 
     @Transaction
     @Query("SELECT * FROM ItemPhoto WHERE itemId==:id AND isCoverImage == 1")
-    fun getItemCoverPhotoByItemId(id: Int): ItemPhoto?
+    suspend fun getItemCoverPhotoByItemId(id: Int): ItemPhoto?
 }

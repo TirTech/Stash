@@ -22,7 +22,6 @@ abstract class AppDatabase : RoomDatabase() {
         lateinit var db: AppDatabase
         fun dbinit(context: Context) {
             db = Room.databaseBuilder(context, AppDatabase::class.java, "stash.db")
-            .allowMainThreadQueries()
             .createFromAsset("databases/stash-v8.db")
             .build()
         }

@@ -1,22 +1,30 @@
 package ca.tirtech.stash
 
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
 import ca.tirtech.stash.database.AppDatabase.Companion.db
 import ca.tirtech.stash.database.entity.CategoryWithSubcategory
 import ca.tirtech.stash.util.popTo
-import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import java.util.*
 
 class CollectionModel : ViewModel() {
 
     private val database = db
     private val selectedCategoryId = MutableLiveData(0)
-    val currentCategory = Transformations.map(selectedCategoryId, this::mapIdToCategory)
+    val currentCategory = selectedCategoryId.switchMap { id ->
+        liveData {
+                emit(database.categoryDAO().getCategoryWithSubcategories(id).also {
+                    solveCategoryStack(it)
+                })
+        }
+    }
     var categoryStack: Stack<CategoryWithSubcategory> = Stack()
-    val items = Transformations.switchMap(selectedCategoryId) { id: Int -> database.itemDAO().getItemsForCategory(id) }
+    val items = selectedCategoryId.switchMap { id ->
+        liveData {
+            emit(database.itemDAO().getItemsForCategory(id))
+        }
+    }
 
     fun setSelectedCategoryId(id: Int) {
         selectedCategoryId.value = id
@@ -24,17 +32,14 @@ class CollectionModel : ViewModel() {
 
     fun traverseToParentCategory() = currentCategory.value?.category?.parentId?.let { setSelectedCategoryId(it) }
 
-    private fun mapIdToCategory(id: Int): CategoryWithSubcategory =
-        database.categoryDAO().getCategoryWithSubcategories(id).also {
-            solveCategoryStack(it)
-        }
-
     init {
-        database.categoryDAO().getRootCategory()?.let { selectedCategoryId.value = it.category.id }
+        runBlocking {
+           database.categoryDAO().getRootCategory()?.let { selectedCategoryId.value = it.category.id }
+        }
     }
 
     fun refreshCategory() {
-         MainScope().launch {
+        viewModelScope.launch {
             selectedCategoryId.value = selectedCategoryId.value
         }
     }
@@ -50,7 +55,7 @@ class CollectionModel : ViewModel() {
             categoryStack.isEmpty() -> categoryStack.add(change)
             change.category.parentId == categoryStack.peek().category.id -> categoryStack.add(change)
             else -> {
-                categoryStack.popTo({change.category.id == it.category.id}, true)
+                categoryStack.popTo({ change.category.id == it.category.id }, true)
                 categoryStack.add(change)
             }
 

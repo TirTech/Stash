@@ -4,14 +4,15 @@ import android.app.Application
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.matcher.ViewMatchers.*
+import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
+import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import androidx.test.rule.ActivityTestRule
 import ca.tirtech.stash.MainActivity
 import ca.tirtech.stash.R
 import ca.tirtech.stash.database.AppDatabase
 import ca.tirtech.stash.database.AppDatabase.Companion.db
 import ca.tirtech.stash.database.entity.Category
+import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertNull
 import org.junit.Before
 import org.junit.Rule
@@ -42,7 +43,7 @@ class MetaTest {
      * Either of these two tests will cause the other to fail if the database is dirty between runs.
      */
     @Test
-    fun dbLoadTestA() {
+    fun dbLoadTestA() = runBlocking {
         assertNull(db.categoryDAO().getAllCategories().firstOrNull { it.name == catName })
         db.categoryDAO().insertCategory(Category(catName,1))
     }
@@ -52,7 +53,7 @@ class MetaTest {
      * Either of these two tests will cause the other to fail if the database is dirty between runs.
      */
     @Test
-    fun dbLoadTestB() {
+    fun dbLoadTestB() = runBlocking {
         assertNull(db.categoryDAO().getAllCategories().firstOrNull { it.name == catName })
         db.categoryDAO().insertCategory(Category(catName,1))
     }

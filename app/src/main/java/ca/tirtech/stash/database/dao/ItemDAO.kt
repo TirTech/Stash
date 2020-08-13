@@ -8,17 +8,17 @@ import ca.tirtech.stash.database.entity.ItemWithFieldValuesAndConfigs
 @Dao
 interface ItemDAO {
     @Update
-    fun updateItem(item: Item)
+    suspend fun updateItem(item: Item)
 
     @Insert
-    fun insertItem(item: Item): Long
+    suspend fun insertItem(item: Item): Long
 
     @Query("SELECT * FROM Item WHERE categoryId == :categoryId")
-    fun getItemsForCategory(categoryId: Int): LiveData<List<Item>>
+    suspend fun getItemsForCategory(categoryId: Int): List<Item>
 
     @Transaction
     @Query("SELECT * FROM Item WHERE id == :id")
-    fun getItemWithFieldValuesAndConfigs(id: Int): ItemWithFieldValuesAndConfigs?
+    suspend fun getItemWithFieldValuesAndConfigs(id: Int): ItemWithFieldValuesAndConfigs?
 
     @Query("SELECT * FROM Item WHERE id == :id")
     suspend fun getItemForId(id: Int): Item?

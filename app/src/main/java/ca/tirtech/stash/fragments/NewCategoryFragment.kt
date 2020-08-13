@@ -66,16 +66,19 @@ class NewCategoryFragment : Fragment() {
         val name = txtCategoryName.value()
         if (name.isNotEmpty()) {
             if (editingCategory == null) {
-                Repository.createCategoryWithFields(
+                CoroutineScope(Dispatchers.Default).launch {
+                    Repository.createCategoryWithFields(
                     Category(name, model.currentCategory.value!!.category.id),
                     fieldConfigEditor.getConfigs()
-                ).invokeOnCompletion {
+                )}.invokeOnCompletion {
                     model.refreshCategory()
                 }
             } else {
                 editingCategory?.also { ei ->
                     ei.category.name = name
-                    Repository.updateCategoryWithFieldConfigs(ei.category, fieldConfigEditor.getConfigs()).invokeOnCompletion {
+                    CoroutineScope(Dispatchers.Default).launch {
+                        Repository.updateCategoryWithFieldConfigs(ei.category, fieldConfigEditor.getConfigs())
+                    }.invokeOnCompletion {
                         model.refreshCategory()
                     }
                 }

@@ -1,21 +1,23 @@
 package ca.tirtech.stash.util
 
-import android.app.Activity
-import android.content.Context
-import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.CoroutineStart
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 import org.json.JSONArray
 import org.json.JSONException
 import java.util.*
+import kotlin.collections.ArrayList
 import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.EmptyCoroutineContext
 
+fun <T> String.jsonToList(): ArrayList<T> = ArrayList<T>().fromJsonString(this)
 
 fun <T> ArrayList<T>.fromJsonString(list: String): ArrayList<T> = apply {
     try {

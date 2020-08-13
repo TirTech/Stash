@@ -45,14 +45,15 @@
                 android:ems="10"
                 android:id="@+id/editNum_field_value"/>
     </com.google.android.material.textfield.TextInputLayout>
-    <Spinner
+    <ca.tirtech.stash.components.MaterialSpinner
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/spn_field_value"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintBottom_toBottomOf="parent"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"/>
     <ca.tirtech.stash.components.MultiSelect
             android:id="@+id/ms_field_value"
             android:layout_width="0dp"

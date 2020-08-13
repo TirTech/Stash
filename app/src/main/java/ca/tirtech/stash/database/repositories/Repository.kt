@@ -1,16 +1,13 @@
 package ca.tirtech.stash.database.repositories
 
-import android.app.Application
+import androidx.room.withTransaction
 import ca.tirtech.stash.database.AppDatabase.Companion.db
 import ca.tirtech.stash.database.entity.*
-import ca.tirtech.stash.util.launchIdling
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 object Repository {
-    fun createCategoryWithFields(category: Category, fields: List<FieldConfig>) = transactionInCoroutine {
+    suspend fun createCategoryWithFields(category: Category, fields: List<FieldConfig>) = transactionInCoroutine {
         val cid = db.categoryDAO().insertCategory(category).toInt()
         fields.forEach {
             it.categoryId = cid
@@ -32,7 +29,7 @@ object Repository {
         db.fieldConfigDAO().getAllFieldConfigsForCategoryIds(categoryIds)
     }
 
-    fun createItemWithFieldsAndPhotos(item: Item, fields: List<FieldValue>, photos: List<ItemPhoto>) = transactionInCoroutine {
+    suspend fun createItemWithFieldsAndPhotos(item: Item, fields: List<FieldValue>, photos: List<ItemPhoto>) = transactionInCoroutine {
         val iid = db.itemDAO().insertItem(item).toInt()
         fields.forEach {
             it.itemId = iid
@@ -44,12 +41,10 @@ object Repository {
         }
     }
 
-    private fun transactionInCoroutine(f: () -> Unit) =
-        GlobalScope.launchIdling {
-            db.runInTransaction(f)
-        }
+    private suspend fun transactionInCoroutine(f: suspend () -> Unit) =
+        db.withTransaction(f)
 
-    fun updateItemWithFieldsAndPhotos(item: Item, values: List<FieldValue>, photos: List<ItemPhoto>) = transactionInCoroutine {
+    suspend fun updateItemWithFieldsAndPhotos(item: Item, values: List<FieldValue>, photos: List<ItemPhoto>) = transactionInCoroutine {
         db.itemDAO().updateItem(item)
         values.forEach { db.fieldValueDAO().updateFieldValue(it) }
         photos.forEach {
@@ -62,7 +57,7 @@ object Repository {
         }
     }
 
-    fun updateCategoryWithFieldConfigs(category: Category, configs: List<FieldConfig>) = transactionInCoroutine {
+    suspend fun updateCategoryWithFieldConfigs(category: Category, configs: List<FieldConfig>) = transactionInCoroutine {
         db.categoryDAO().updateCategory(category)
         configs.forEach {
             it.categoryId = category.id

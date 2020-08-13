@@ -9,22 +9,22 @@ import ca.tirtech.stash.database.entity.CategoryWithSubcategory
 interface CategoryDAO {
     @Transaction
     @Query("SELECT * FROM Category WHERE id==:id")
-    fun getCategoryWithSubcategories(id: Int): CategoryWithSubcategory
+    suspend fun getCategoryWithSubcategories(id: Int): CategoryWithSubcategory
 
     @Query("SELECT * FROM Category WHERE parentId is NULL")
     @Transaction
-    fun getRootCategory(): CategoryWithSubcategory?
+    suspend fun getRootCategory(): CategoryWithSubcategory?
 
     @Query("SELECT * FROM Category")
-    fun getAllCategories(): List<Category>
+    suspend fun getAllCategories(): List<Category>
 
     @Insert
-    fun insertCategory(category: Category): Long
+    suspend fun insertCategory(category: Category): Long
 
     @Update
-    fun updateCategory(category: Category)
+    suspend fun updateCategory(category: Category)
 
     @Transaction
     @Query("SELECT * FROM Category WHERE id==:id")
-    fun getCategoryWithFieldConfigs(id: Int): CategoryWithFieldConfigs?
+    suspend fun getCategoryWithFieldConfigs(id: Int): CategoryWithFieldConfigs?
 }
